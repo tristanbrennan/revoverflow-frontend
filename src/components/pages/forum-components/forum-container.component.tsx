@@ -24,8 +24,6 @@ const PostsA: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const PostsQ: any[] = [1];
 const dataA = ['Michel', 'If you are a Zigerion do not read beyond this point', 'two parts plutonic quarks (pink) and one part cesium (green)']
 
-
-
 export const ForumContainerComponent: React.FC = () => {
     const classes = useStyles();
 
@@ -48,7 +46,6 @@ export const ForumContainerComponent: React.FC = () => {
             )
         })
     }
-
 
     return (
         <Container className={classes.containerRoot}>
