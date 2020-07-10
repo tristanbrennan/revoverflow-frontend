@@ -78,7 +78,7 @@ input::placeholder {
 }
 
 .logIn button {
-    background-color: orangered;
+    background-color: orange;
     color: #fff;
     border: 2px solid #fff;
     width: 100%;
@@ -91,7 +91,7 @@ input::placeholder {
 }
 
 .logIn button:hover {
-    color:orangered;
+    color:orange;
     background-color: #fff;
-    border: 2px solid orangered;
+    border: 2px solid orange;
 }
