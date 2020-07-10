@@ -28,11 +28,6 @@ interface ForumQuestionComponentProps {
 
 export const ForumQuestionComponent: React.FC<ForumQuestionComponentProps> = (props) => {
     const classes = useStyles();
-    const [color, setColor] = useState(false)
-
-    const selectAnswer = () => {
-        setColor(!color)
-    }
 
     return (
         <div className={classes.boxInternal} >
