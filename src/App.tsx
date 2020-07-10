@@ -1,12 +1,11 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { NavbarComponent } from './components/navbar.component';
+import { MainComponent } from './components/main.component';
 
 function App() {
   return (
     <div className="App">
-      <NavbarComponent />
+        <MainComponent />
     </div>
   );
 }
