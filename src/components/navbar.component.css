@@ -1,0 +1,17 @@
+#navbar-custom {
+    background: orange;
+    height: 8vh;
+}
+
+#avatar{
+    padding: 45%
+}
+#rss-points {
+    margin-top: 7%;
+    color:blue;
+}
+
+#app-logo{
+    background-image: url(../logo/image.png);
+}
+
