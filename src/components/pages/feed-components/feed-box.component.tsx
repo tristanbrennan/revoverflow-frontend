@@ -1,13 +1,12 @@
 import React from 'react';
-import { Box, makeStyles, createMuiTheme, Container } from '@material-ui/core';
-import { orange } from '@material-ui/core/colors';
+import { makeStyles } from '@material-ui/core';
 import { useHistory } from 'react-router';
 
 
 const useStyles = makeStyles({
     boxInternal: {
-    borderStyle: "dashed",  
-    minHeight: 200,
+        borderBottomStyle: "dashed",
+        width: "60vw"
     },
 });
 
@@ -30,11 +29,9 @@ export const FeedBoxComponent: React.FC<FeedBoxComponentProps> = (props) => {
             <h2>{props.title}</h2>
             <p>{props.body}</p>
             <h3>{props.username}</h3>
-            <h2>{props.title}</h2>
         </div>
 
     )
 }
-
 
 //!Onlick  redirect to Forum page and Pass Question Id

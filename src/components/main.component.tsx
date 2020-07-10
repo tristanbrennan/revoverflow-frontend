@@ -15,6 +15,12 @@ export const MainComponent: React.FC = () => {
                     <Route exact path="/forum">
                         <ForumContainerComponent />
                     </Route>
+                    <Route exact path="/Question">
+                        {/* <PostQuestionComponent /> */}
+                    </Route>
+                    <Route exact path="/Answer">
+                        {/* <PostAnswerComponent /> */}
+                    </Route>
                 </Switch>
             </main>
         </BrowserRouter>
