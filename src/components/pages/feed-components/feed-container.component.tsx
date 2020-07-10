@@ -1,5 +1,4 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { makeStyles, Container, createMuiTheme, ThemeProvider, Grid, Box, Button } from '@material-ui/core';
@@ -8,26 +7,25 @@ import { FeedBoxComponent } from './feed-box.component';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 
 const useStyles = makeStyles({
-    tabRoot: {
-        flexGrow: 1,
+    menuRoot: {
         position: "absolute",
-        maxWidth: 500,
-        bottom: "65vh",
+        bottom: "75vh",
         right: "10vw",
     },
-    boxRoot: {
-        flexGrow: 1,
+    menuInternal: {
+        maxHeight: 40,
+        bottom: "85vh",
+        right: "50vw",
         position: "absolute",
-        width: "330%",
-        top: "35vh",
-        left: "15vw",
     },
-    buttonRoot: {
-        flexGrow: 1,
-        left: "10vw",
-        marginBottom: 20,
-        padding: 10
-        
+    menuTitle: {
+        display: "flex"
+    },
+    boxRoot: {
+        position: "absolute",
+        top: "25vh",
+        left: "30vw",
+        borderStyle: "dashed",
     },
 });
 
@@ -52,7 +50,7 @@ export const FeedContainerComponent: React.FC = () => {
 
     const data = ['Yuri', 'What is the Formula for Concentrated Dark matter?', 'I have been wondering for the longest time, does anyone know the formula for concentrated dark matter?']
     const Posts: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    
+
     const renderFeedBoxComponents = () => {
         return Posts.map(post => {
             return (
@@ -65,9 +63,11 @@ export const FeedContainerComponent: React.FC = () => {
 
     return (
         <Container >
-            <h1>Questions: </h1>
-            <Box className={classes.tabRoot} >
-                <Button variant="contained" color="primary" className={classes.buttonRoot}  >
+            <div className={classes.menuInternal}>
+                <h1>Questions: </h1>
+            </div>
+            <Box className={classes.menuRoot} >
+                <Button variant="contained" color="primary" >
                     Ask a Question
                     </Button>
                 <ThemeProvider theme={theme} >
@@ -92,7 +92,6 @@ export const FeedContainerComponent: React.FC = () => {
         </Container>
     );
 }
-
 
 //!Pagination of Feed items
 //!Button on click goes to post a question page
