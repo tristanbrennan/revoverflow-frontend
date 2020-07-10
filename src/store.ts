@@ -1,6 +1,6 @@
 import { compose, applyMiddleware, createStore, Store } from "redux";
 import reduxThunk from 'redux-thunk';
-//import { state } from "./reducers";
+import { state } from "./reducers";
 
 const a: any = window;
 
@@ -13,6 +13,6 @@ const enhancer = composeEnhancers(
 );
 
 export const store: Store<any> = createStore(
-    //state,
+    state,
     enhancer
 )
