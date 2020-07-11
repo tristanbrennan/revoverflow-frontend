@@ -3,27 +3,15 @@
     height: 8.9vh;
 }
 
-#avatar{
-    padding: 45%
-}
 #rss-points {
     margin-top: 7%;
     color:blue;
 }
 
-
 #icon-drawer{
     color: orange;
 }
 
-#search-bar{
+#search-icon{
     color: orange
-}
-
-#search-box{
-    color:orange
-}
-
-#notif-badge{
-    color: blue
 }
