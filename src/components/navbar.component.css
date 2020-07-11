@@ -1,6 +1,6 @@
 #navbar-custom {
-    background: orange;
-    height: 8vh;
+    background: white;
+    height: 8.9vh;
 }
 
 #avatar{
@@ -11,7 +11,19 @@
     color:blue;
 }
 
-#app-logo{
-    background-image: url(../logo/image.png);
+
+#icon-drawer{
+    color: orange;
 }
 
+#search-bar{
+    color: orange
+}
+
+#search-box{
+    color:orange
+}
+
+#notif-badge{
+    color: blue
+}

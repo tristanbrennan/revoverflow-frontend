@@ -22,6 +22,8 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 
+
+
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         grow: {
@@ -39,10 +41,8 @@ const useStyles = makeStyles((theme: Theme) =>
         search: {
             position: 'relative',
             borderRadius: theme.shape.borderRadius,
-            backgroundColor: fade(theme.palette.common.white, 0.15),
-            '&:hover': {
-                backgroundColor: fade(theme.palette.common.white, 0.25),
-            },
+            color: 'white',
+            backgroundColor:'gray',
             marginRight: theme.spacing(2),
             marginLeft: 0,
             width: '100%',
@@ -61,7 +61,8 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'center',
         },
         inputRoot: {
-            color: 'inherit',
+            color: 'white',
+            fontWeight:'bolder'
         },
         inputInput: {
             padding: theme.spacing(1, 1, 1, 0),
@@ -85,6 +86,11 @@ const useStyles = makeStyles((theme: Theme) =>
                 display: 'none',
             },
         },
+        media: {
+          height: 40,
+          minWidth: 100,
+          position: 'static'
+        }
     }),
 );
 
@@ -175,9 +181,9 @@ export const NavbarComponent: React.FC = () => {
         <AppBar position="static" id="navbar-custom">
           <Toolbar>
             <IconButton
+              id='icon-drawer'
               edge="start"
               className={classes.menuButton}
-              color="inherit"
               aria-label="open drawer"
             >
               <MenuIcon />
@@ -186,26 +192,29 @@ export const NavbarComponent: React.FC = () => {
           <Card>
             <CardContent>
               <CardMedia 
+              className={classes.media}
               image={require('../logo/image.png')}/>
 
               
             </CardContent>
           </Card>
 
-            <div className={classes.search}>
+            <div  className={classes.search}>
               <div className={classes.searchIcon}>
-                <SearchIcon />
+                <SearchIcon  id="search-bar"/>
               </div>
               <InputBase
-                id="search-bar"
+                
                 placeholder="Search…"
+
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
-                inputProps={{ "aria-label": "search" }}
+                inputProps={{ "aria-label": "search"}}
               />
             </div>
+            
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
               <IconButton
@@ -220,9 +229,9 @@ export const NavbarComponent: React.FC = () => {
 
               <IconButton
                 aria-label="show 17 new notifications"
-                color="inherit"
+                
               >
-                <Badge color="secondary">
+                <Badge >
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
