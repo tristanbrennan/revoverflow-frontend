@@ -16,9 +16,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import './navbar.component.css';
 import '../logo/image.png'
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
+
 
 
 
@@ -187,17 +185,9 @@ export const NavbarComponent: React.FC = () => {
               <MenuIcon />
             </IconButton>
 
-          <Card>
-            <CardContent>
-              <CardMedia 
-              className={classes.media}
-              image={require('../logo/image.png')}/>
+            <img alt ='logo' src={require('../logo/image.png')}/>
 
-              
-            </CardContent>
-          </Card>
-
-            <div  className={classes.search}>
+          <div  className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon  id="search-icon"/>
               </div>
