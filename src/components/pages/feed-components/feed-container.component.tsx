@@ -1,43 +1,31 @@
 import React from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { makeStyles, Container, createMuiTheme, ThemeProvider, Grid, Box, Button } from '@material-ui/core';
-import { orange } from '@material-ui/core/colors';
+import { Container, createMuiTheme, ThemeProvider, Box, Button, makeStyles } from '@material-ui/core';
 import { FeedBoxComponent } from './feed-box.component';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
-
-const useStyles = makeStyles({
-    menuRoot: {
-        position: "absolute",
-        bottom: "75vh",
-        right: "10vw",
-    },
-    menuInternal: {
-        maxHeight: 40,
-        bottom: "85vh",
-        right: "50vw",
-        position: "absolute",
-    },
-    menuTitle: {
-        display: "flex"
-    },
-    boxRoot: {
-        position: "absolute",
-        top: "25vh",
-        left: "30vw",
-        borderStyle: "dashed",
-    },
-});
+import DynamicFeedOutlinedIcon from '@material-ui/icons/DynamicFeedOutlined';
+import HelpOutlinedIcon from '@material-ui/icons/HelpOutlined';
+import ConfirmationNumberOutlinedIcon from '@material-ui/icons/ConfirmationNumberOutlined';
 
 const theme = createMuiTheme({
     palette: {
         primary: {
-            main: orange[500],
+            main: '#f26925',
         },
         secondary: {
-            main: orange[500],
+            main: '#3498db',
         },
     },
+});
+
+const useStyles = makeStyles({
+    boxInternal: {
+        color: "#f26925"
+    },
+    containerInternal: {
+        marginTop: 10
+    }
 });
 
 export const FeedContainerComponent: React.FC = () => {
@@ -54,22 +42,21 @@ export const FeedContainerComponent: React.FC = () => {
     const renderFeedBoxComponents = () => {
         return Posts.map(post => {
             return (
-                <Grid item xs={3}>
-                    <FeedBoxComponent username={data[0]} title={data[1]} body={data[2]} />
-                </Grid>
+                <FeedBoxComponent username={data[0]} title={data[1]} body={data[2]} />
             )
         })
     }
 
     return (
-        <Container >
-            <div className={classes.menuInternal}>
-                <h1>Questions: </h1>
-            </div>
-            <Box className={classes.menuRoot} >
-                <Button variant="contained" color="primary" >
-                    Ask a Question
+        <Container className={classes.containerInternal}>
+            <Box justifyContent="flex-end" display="flex" >
+                <ThemeProvider theme={theme} >
+                    <Button variant="contained" color="secondary" >
+                        Ask a Question
                     </Button>
+                </ThemeProvider>
+            </Box>
+            <Box justifyContent="flex-end" display="flex" >
                 <ThemeProvider theme={theme} >
                     <Tabs
                         value={value}
@@ -77,18 +64,19 @@ export const FeedContainerComponent: React.FC = () => {
                         textColor="primary"
                         variant="fullWidth"
                         onChange={handleChange}
-                        aria-label="disabled tabs example"
-                        centered
                     >
-                        <Tab icon={<QuestionAnswerIcon />} label="RECENTS" />
-                        <Tab icon={<QuestionAnswerIcon />} label="FAVORITES" />
-                        <Tab icon={<QuestionAnswerIcon />} label="NEARBY" />
+                        <Tab icon={<DynamicFeedOutlinedIcon fontSize="large" />} label="RECENT" className={classes.boxInternal}/>
+                        <Tab icon={<HelpOutlinedIcon fontSize="large" />} label="MY QUESTIONS" className={classes.boxInternal}/>
+                        <Tab icon={<QuestionAnswerIcon fontSize="large" />} label="MY ANSWERS" className={classes.boxInternal}/>
+                        <Tab icon={<ConfirmationNumberOutlinedIcon fontSize="large" />} label="CONFIRM" className={classes.boxInternal}/>  //!Appears on isAdmin true
                     </Tabs>
                 </ThemeProvider>
             </Box>
-            <Box className={classes.boxRoot}>
-                {renderFeedBoxComponents()}
-            </Box>
+            <div style={{ width: '100%' }}>
+                <Box display="flex" flexDirection="column" justifyContent="center" >
+                    {renderFeedBoxComponents()}
+                </Box>
+            </div>
         </Container>
     );
 }
