@@ -1,3 +1,8 @@
+/**
+ * @file Manage styling of the navbar component for the web application
+ * @author Michel Charles <mcharl05@nyit.edu>
+ */
+
 #navbar-custom {
     background: white;
     height: 8vh;
@@ -8,10 +13,10 @@
     color: #3498db;
 }
 
-#icon-drawer{
+#icon-drawer {
     color: #f26925;
 }
 
-#search-icon{
+#search-icon {
     color: #f26925;
 }
