@@ -3,7 +3,6 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { FeedContainerComponent } from './pages/feed-components/feed-container.component';
 import { ForumContainerComponent } from './pages/forum-components/forum-container.component';
 import { LoginComponent } from './pages/login.component/login.component';
-import { BreadcrumbBarComponent } from './pages/breadcrumb-bar.component';
 import { NavbarComponent } from './navbar.component';
 
 
