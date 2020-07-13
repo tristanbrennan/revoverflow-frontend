@@ -8,8 +8,9 @@ import DynamicFeedOutlinedIcon from '@material-ui/icons/DynamicFeedOutlined';
 import HelpOutlinedIcon from '@material-ui/icons/HelpOutlined';
 import ConfirmationNumberOutlinedIcon from '@material-ui/icons/ConfirmationNumberOutlined';
 import Pagination from '@material-ui/lab/Pagination';
+import { BreadcrumbBarComponent } from '../breadcrumb-bar.component';
 
-
+const drawerWidth = 100;
 const theme = createMuiTheme({
     palette: {
         primary: {
@@ -26,7 +27,13 @@ const useStyles = makeStyles({
         color: "#f26925"
     },
     containerInternal: {
-        marginTop: 10
+        marginTop: 20,
+        marginLeft: 80,
+        width: `calc(100% - ${drawerWidth}px)`,
+    },
+    breadcrumbBar: {
+        marginTop: 60,
+        marginLeft: 20
     }
 });
 
@@ -50,40 +57,43 @@ export const FeedContainerComponent: React.FC = () => {
     }
 
     return (
-        <Container className={classes.containerInternal}>
-            <Box justifyContent="flex-end" display="flex" >
-                <ThemeProvider theme={theme} >
-                    <Button variant="contained" color="secondary" >
-                        Ask a Question
-                    </Button>
-                </ThemeProvider>
-            </Box>
-            <ThemeProvider theme={theme} >
+        <div className={classes.breadcrumbBar}>
+            <BreadcrumbBarComponent />
+            <Container className={classes.containerInternal}>
                 <Box justifyContent="flex-end" display="flex" >
+                    <ThemeProvider theme={theme} >
+                        <Button variant="contained" color="secondary" >
+                            Ask a Question
+                    </Button>
+                    </ThemeProvider>
+                </Box>
+                <ThemeProvider theme={theme} >
+                    <Box justifyContent="flex-end" display="flex" >
 
-                    <Tabs
-                        value={value}
-                        indicatorColor="secondary"
-                        textColor="primary"
-                        variant="fullWidth"
-                        onChange={handleChange}
-                    >
-                        <Tab icon={<DynamicFeedOutlinedIcon fontSize="large" />} label="RECENT" className={classes.boxInternal} />
-                        <Tab icon={<HelpOutlinedIcon fontSize="large" />} label="MY QUESTIONS" className={classes.boxInternal} />
-                        <Tab icon={<QuestionAnswerIcon fontSize="large" />} label="MY ANSWERS" className={classes.boxInternal} />
-                        <Tab icon={<ConfirmationNumberOutlinedIcon fontSize="large" />} label="CONFIRM" className={classes.boxInternal} />  //!Appears on isAdmin true
-                    </Tabs>
-                </Box>
-                <div style={{ width: '100%' }}>
-                    <Box display="flex" flexDirection="column" justifyContent="center" >
-                        {renderFeedBoxComponents()}
+                        <Tabs
+                            value={value}
+                            indicatorColor="secondary"
+                            textColor="primary"
+                            variant="fullWidth"
+                            onChange={handleChange}
+                        >
+                            <Tab icon={<DynamicFeedOutlinedIcon fontSize="large" />} label="RECENT" className={classes.boxInternal} />
+                            <Tab icon={<HelpOutlinedIcon fontSize="large" />} label="MY QUESTIONS" className={classes.boxInternal} />
+                            <Tab icon={<QuestionAnswerIcon fontSize="large" />} label="MY ANSWERS" className={classes.boxInternal} />
+                            <Tab icon={<ConfirmationNumberOutlinedIcon fontSize="large" />} label="CONFIRM" className={classes.boxInternal} />  //!Appears on isAdmin true
+                        </Tabs>
                     </Box>
-                </div>
-                <Box display="flex" justifyContent="center" padding={5}>
-                    <Pagination  size="medium" count={10} color="secondary" />
-                </Box>
-            </ThemeProvider>
-        </Container>
+                    <div style={{ width: '100%' }}>
+                        <Box display="flex" flexDirection="column" justifyContent="center" >
+                            {renderFeedBoxComponents()}
+                        </Box>
+                    </div>
+                    <Box display="flex" justifyContent="center" padding={5}>
+                        <Pagination size="medium" count={10} color="secondary" />
+                    </Box>
+                </ThemeProvider>
+            </Container>
+        </div>
     );
 }
 

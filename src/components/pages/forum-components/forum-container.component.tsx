@@ -2,13 +2,22 @@ import React, { useState } from 'react';
 import { Box, Container, makeStyles } from '@material-ui/core';
 import { ForumAnswerComponent } from './forum-answer.component';
 import { ForumQuestionComponent } from './forum-question.component';
+import { BreadcrumbBarComponent } from '../breadcrumb-bar.component';
 
+
+const drawerWidth = 100;
 const useStyles = makeStyles({
     boxInternal: {
         color: "#f26925"
     },
     containerInternal: {
-        marginTop: 10
+        marginTop: 20,
+        marginLeft: 80,
+        width: `calc(100% - ${drawerWidth}px)`,
+    },
+    breadcrumbBar: {
+        marginTop: 60,
+        marginLeft: 20
     }
 });
 
@@ -38,6 +47,8 @@ export const ForumContainerComponent: React.FC = () => {
     }
 
     return (
+        <div className={classes.breadcrumbBar}>
+            <BreadcrumbBarComponent />
         <Container className={classes.containerInternal} >
             <div style={{ width: '100%' }}>
                 <Box justifyContent="center" display="flex" flexDirection="column">
@@ -46,6 +57,7 @@ export const ForumContainerComponent: React.FC = () => {
                 </Box>
             </div>
         </Container>
+        </div>
     )
 }
 

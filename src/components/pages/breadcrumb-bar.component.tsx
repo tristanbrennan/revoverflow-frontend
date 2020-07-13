@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme: Theme) =>
             height: 20,
         },
         toolbar: {
-            backgroundColor: "#474c55"
+            backgroundColor: "#474c55",
+            paddingLeft: 80
         }
     }),
 );

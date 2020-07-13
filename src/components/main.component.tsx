@@ -18,19 +18,15 @@ export const MainComponent: React.FC = () => {
                     <div>
                         <NavbarComponent />
                         <Route exact path="/feed">
-                            <BreadcrumbBarComponent />
                             <FeedContainerComponent />
                         </Route>
                         <Route exact path="/forum">
-                            <BreadcrumbBarComponent />
                             <ForumContainerComponent />
                         </Route>
                         <Route exact path="/question">
-                            <BreadcrumbBarComponent />
                             {/* <PostQuestionComponent /> */}
                         </Route>
                         <Route exact path="/answer">
-                            <BreadcrumbBarComponent />
                             {/* <PostAnswerComponent /> */}
                         </Route>
                     </div>
