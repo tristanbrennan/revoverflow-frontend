@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, Box, Container, Button, createMuiTheme, ThemeProvider, Card } from '@material-ui/core';
+import { makeStyles, Box, Container, Button, Card, createMuiTheme, ThemeProvider } from '@material-ui/core';
 
 
 const useStyles = makeStyles({
@@ -10,6 +10,10 @@ const useStyles = makeStyles({
         borderColor: "#f26925",
         padding: 10
     },
+    buttonInternal: {
+        color: '#ffffff',
+        backgroundColor: '#3498db'
+    }
 });
 
 const theme = createMuiTheme({
@@ -29,13 +33,20 @@ interface ForumQuestionComponentProps {
     body: String;
 }
 
+const confirmAnswer = () => {
+    //! logic to update the question entity status boolean
+    //! attributes points to question owner's user account 
+}
+
+    //! logic that conditionally renders the confirm button 
+
 export const ForumQuestionComponent: React.FC<ForumQuestionComponentProps> = (props) => {
     const classes = useStyles();
 
     return (
-        <Container >
-            <Card className={classes.boxInternal}>
-                <ThemeProvider theme={theme} >
+        <ThemeProvider theme={theme} >
+            <Container >
+                <Card className={classes.boxInternal}>
                     <Box justifyContent="space-between" display="flex" flexDirection="row" color="primary">
                         <Box textAlign="left" >
                             <h2>{props.title}</h2>
@@ -43,14 +54,14 @@ export const ForumQuestionComponent: React.FC<ForumQuestionComponentProps> = (pr
                             <footer>{props.username} <br />01/01/2020</footer>
                         </Box>
                         <Box  >
-                            <Button variant="contained" color="secondary" >  
-                                Confirm Answer
+                            <Button variant="contained" color="secondary" onClick={() => confirmAnswer()}>
+                                Confirm
                             </Button>
                         </Box>
                     </Box>
-                </ThemeProvider>
-            </Card>
-        </Container>
+                </Card>
+            </Container>
+        </ThemeProvider>
     )
 }
 
