@@ -15,8 +15,7 @@ export const MainComponent: React.FC = () => {
                         <LoginComponent />
                     </Route>
                     <div>
-                         <NavbarComponent />
-                        {/* <SideMenuComponent></SideMenuComponent> */}
+                        <NavbarComponent />
                         <Route exact path="/feed">
                             <FeedContainerComponent />
                         </Route>
