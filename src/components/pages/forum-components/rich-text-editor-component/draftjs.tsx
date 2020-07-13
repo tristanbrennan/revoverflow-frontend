@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
+import { Editor, EditorState, RichUtils } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import './draftjs.css';
 import { Button } from '@material-ui/core';
