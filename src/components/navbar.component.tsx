@@ -178,9 +178,6 @@ export const NavbarComponent: React.FC = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
