@@ -179,6 +179,7 @@ export const NavbarComponent: React.FC = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
     localStorage.removeItem("accessToken");
+    console.log("logged out");
   };
   const menuId = "primary-search-account-menu";
   const renderMenu = (
