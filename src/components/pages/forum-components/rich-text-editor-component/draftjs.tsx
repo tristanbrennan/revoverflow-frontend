@@ -69,6 +69,14 @@ export const RichTextEditorComponent: React.FC = () => {
         event.preventDefault();
         onChange(RichUtils.toggleBlockType(editorState, 'header-three'));
     }
+    const onOrderClick = (event: any) => {
+        event.preventDefault();
+        onChange(RichUtils.toggleBlockType(editorState, 'ordered-list-item'));
+    }
+    const onUnorderClick = (event: any) => {
+        event.preventDefault();
+        onChange(RichUtils.toggleBlockType(editorState, 'unordered-list-item'));
+    }
 
     const buttons = [
         { function: onBoldClick, name: 'Bold', style: 'BOLD' },
@@ -77,6 +85,8 @@ export const RichTextEditorComponent: React.FC = () => {
         { function: onStrikethroughClick, name: 'Strikethrough', style: 'STRIKETHROUGH' },
         { function: onCodeClick, name: 'Code', style: 'CODE' }]
     const blockbuttons = [
+        { function: onOrderClick, name: 'Ordered List', block: 'ordered-list-item' },
+        { function: onUnorderClick, name: 'Unordered List', block: 'unordered-list-item' },
         { function: onHead1Click, name: 'Header1', block: 'header-one' },
         { function: onHead2Click, name: 'Header2', block: 'header-two' },
         { function: onHead3Click, name: 'Header3', block: 'header-three' }]
