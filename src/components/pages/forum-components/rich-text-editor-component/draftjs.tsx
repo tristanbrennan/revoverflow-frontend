@@ -3,6 +3,13 @@ import { useState } from 'react';
 import { Editor, EditorState, RichUtils } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import { Button, createMuiTheme, makeStyles, ThemeProvider, Box, Container, Typography } from '@material-ui/core';
+import FormatBoldIcon from '@material-ui/icons/FormatBold';
+import FormatItalicIcon from '@material-ui/icons/FormatItalic';
+import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
+import StrikethroughSIcon from '@material-ui/icons/StrikethroughS';
+import CodeIcon from '@material-ui/icons/Code';
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 
 
 const theme = createMuiTheme({
@@ -37,7 +44,7 @@ const useStyles = makeStyles({
         overflowY: "auto"
     },
     buttonInternal: {
-        padding: 2
+        padding: 2,
     }
 });
 
@@ -64,6 +71,14 @@ export const RichTextEditorComponent: React.FC = () => {
             return false;
         }
     }
+    const blockbuttonVariant = (name: string) => {
+        const currentInLineStyle = RichUtils.getCurrentBlockType(editorState);
+        if (currentInLineStyle === name) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     const onBoldClick = (event: any) => {
         event.preventDefault();
@@ -85,13 +100,39 @@ export const RichTextEditorComponent: React.FC = () => {
         event.preventDefault();
         onChange(RichUtils.toggleInlineStyle(editorState, 'CODE'));
     }
+    const onHead1Click = (event: any) => {
+        event.preventDefault();
+        onChange(RichUtils.toggleBlockType(editorState, 'header-one'));
+    }
+    const onHead2Click = (event: any) => {
+        event.preventDefault();
+        onChange(RichUtils.toggleBlockType(editorState, 'header-two'));
+    }
+    const onHead3Click = (event: any) => {
+        event.preventDefault();
+        onChange(RichUtils.toggleBlockType(editorState, 'header-three'));
+    }
+    const onOrderClick = (event: any) => {
+        event.preventDefault();
+        onChange(RichUtils.toggleBlockType(editorState, 'ordered-list-item'));
+    }
+    const onUnorderClick = (event: any) => {
+        event.preventDefault();
+        onChange(RichUtils.toggleBlockType(editorState, 'unordered-list-item'));
+    }
 
     const buttons = [
-        { function: onBoldClick, name: 'Bold', style: 'BOLD' },
-        { function: onItalicClick, name: 'Italic', style: 'ITALIC' },
-        { function: onUnderlineClick, name: 'Underline', style: 'UNDERLINE' },
-        { function: onStrikethroughClick, name: 'Strikethrough', style: 'STRIKETHROUGH' },
-        { function: onCodeClick, name: 'Code', style: 'CODE' }]
+        { function: onBoldClick, name: <FormatBoldIcon/>, style: 'BOLD' },
+        { function: onItalicClick, name: <FormatItalicIcon/>, style: 'ITALIC' },
+        { function: onUnderlineClick, name: <FormatUnderlinedIcon/>, style: 'UNDERLINE' },
+        { function: onStrikethroughClick, name: <StrikethroughSIcon/>, style: 'STRIKETHROUGH' },
+        { function: onCodeClick, name: <CodeIcon/>, style: 'CODE' }]
+    const blockbuttons = [
+        { function: onOrderClick, name: <FormatListBulletedIcon/>, block: 'ordered-list-item' },
+        { function: onUnorderClick, name: <FormatListNumberedIcon/>, block: 'unordered-list-item' },
+        { function: onHead1Click, name: 'H1', block: 'header-one' },
+        { function: onHead2Click, name: 'H2', block: 'header-two' },
+        { function: onHead3Click, name: 'H3', block: 'header-three' }]
 
     //BLOCK STYLES may go here, unless you work how to put them in their own file and maintain functionality
 
@@ -102,8 +143,8 @@ export const RichTextEditorComponent: React.FC = () => {
                     Ask a Public Question:
             </Typography>
                 <Box>
-                    <Box justifyContent="center" display="flex">
-                        <Box justifyContent="center" display="flex"  >
+                    <Box justifyContent="center" display="flex" flexDirection="column">
+                        <Box justifyContent="center" display="flex" >
                             {buttons.map(b =>
                                 buttonVariant(b.style) ?
                                     <span className={classes.buttonInternal}>
@@ -114,17 +155,21 @@ export const RichTextEditorComponent: React.FC = () => {
                                         <Button onMouseDown={b.function} size='small' color='secondary' variant='contained' >{b.name} </Button>
                                     </span>)}
                         </Box>
+                        <Box justifyContent="center" display="flex"  >
+                            {blockbuttons.map(b =>
+                                blockbuttonVariant(b.block) ?
+                                    <span className={classes.buttonInternal}>
+                                        <Button onMouseDown={b.function} variant='contained' color='primary' size='small' >{b.name}</Button>
+                                    </span>
+                                    :
+                                    <span className={classes.buttonInternal}>
+                                        <Button onMouseDown={b.function} size='small' color='secondary' variant='contained'>{b.name}</Button>
+                                    </span>)}
+                        </Box>
                     </Box >
                     <Typography variant="h4" >
                         Title:
                     </Typography>
-                    <Box justifyContent="center" display="flex" flexDirection="column" className={classes.titleTool} >
-                        <Editor
-                            editorState={editorState}
-                            handleKeyCommand={handleKeyCommand}
-                            onChange={onChange}
-                        />
-                    </Box>
                     <Typography variant="h4">
                         Content:
                     </Typography>
@@ -138,5 +183,37 @@ export const RichTextEditorComponent: React.FC = () => {
                 </Box>
             </Container>
         </ThemeProvider>
+        // <div className='rte-root'>
+        //     <div className='toolbar'>
+        //         <div className='inline-buttons'>
+        //             {buttons.map(b =>
+        //                 buttonVariant(b.style) ?
+        //                     <span>
+        //                         <Button onMouseDown={b.function} variant='contained' color='primary' size='small' >{b.name}</Button>
+        //                     </span>
+        //                     :
+        //                     <span>
+        //                         <Button onMouseDown={b.function} size='small' >{b.name}</Button>
+        //                     </span>)}
+        //         </div>
+        //         <div className='block-style-buttons'>
+        //             {blockbuttons.map(b =>
+        //                 blockbuttonVariant(b.block) ?
+        //                     <span>
+        //                         <Button onMouseDown={b.function} variant='contained' color='primary' size='small' >{b.name}</Button>
+        //                     </span>
+        //                     :
+        //                     <span>
+        //                         <Button onMouseDown={b.function} size='small' >{b.name}</Button>
+        //                     </span>)}
+        //         </div>
+        //     </div>
+        //     <div className='rte-container'>
+        //         <Editor
+        //             editorState={editorState}
+        //             handleKeyCommand={handleKeyCommand}
+        //             onChange={onChange} />
+        //     </div>
+        // </div>
     )
 }
