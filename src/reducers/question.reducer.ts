@@ -15,7 +15,7 @@ export const questionReducer = (state: QuestionState = initialState,
                 if (!state.collectedQuestions.some(q => 
                     q.title === action.payload.question.title)) {
                         questionArray = [...questionArray, action.payload.question]
-                            .sort((a, b) => a.creationDate.getTime() - b.creationDate.getTime());
+                            .sort((a, b) => b.creationDate.getTime() - a.creationDate.getTime());
                     }
                     return {
                         ...state,
