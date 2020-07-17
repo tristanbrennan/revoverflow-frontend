@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { Editor, EditorState, RichUtils, convertToRaw, ContentState } from 'draft-js';
+import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import parse from 'html-react-parser';
 import 'draft-js/dist/Draft.css';
@@ -102,7 +102,7 @@ export const RichTextEditorComponent: React.FC = () => {
     //     console.log('HTML VERSION', markup);
     // }   
 
-    //INLINE STYLES, consists of these functions, and an array of buttons to map to span button elements
+    //INLINE and BLOCK LEVEL styles, consists of these functions and an array of buttons to map to span button elements
     const buttonVariant = (name: string) => {
         const currentInLineStyle = editorState.getCurrentInlineStyle();
         if (currentInLineStyle.has(name)) {
