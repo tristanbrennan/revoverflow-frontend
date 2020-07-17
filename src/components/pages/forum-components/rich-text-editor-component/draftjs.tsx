@@ -174,7 +174,6 @@ export const RichTextEditorComponent: React.FC = () => {
         { function: onHead2Click, name: 'H2', block: 'header-two' },
         { function: onHead3Click, name: 'H3', block: 'header-three' }]
 
-    //BLOCK STYLES may go here, unless you work how to put them in their own file and maintain functionality
 
     return (
         <ThemeProvider theme={theme} >
