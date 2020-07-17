@@ -79,6 +79,7 @@ export const RichTextEditorComponent: React.FC = () => {
     const saveQuestion = async () => {
         const contentState = editorState.getCurrentContent();
         const payload: Question = {
+            id: 11,
             title: 'test',
             content: JSON.stringify(convertToRaw(contentState)),
             creationDate: new Date(),
