@@ -1,11 +1,13 @@
 import React from 'react';
 import { useState } from 'react';
-import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
+
+import { Editor, EditorState, RichUtils, convertToRaw,Entity } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import parse from 'html-react-parser';
 import 'draft-js/dist/Draft.css';
 import { Button, createMuiTheme, makeStyles, ThemeProvider, Box, Container, Typography } from '@material-ui/core';
 import FormatBoldIcon from '@material-ui/icons/FormatBold';
+import HttpIcon from '@material-ui/icons/Http';
 import FormatItalicIcon from '@material-ui/icons/FormatItalic';
 import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
 import StrikethroughSIcon from '@material-ui/icons/StrikethroughS';
@@ -52,6 +54,14 @@ const useStyles = makeStyles({
         padding: 2,
     }
 });
+
+const styleMap = {
+    'HIGHLIGHT': {
+        padding: 4, 
+
+      'backgroundColor': '#D3D3D3'
+    }
+  };
 
 export const RichTextEditorComponent: React.FC = () => {
     const classes = useStyles();
@@ -102,7 +112,9 @@ export const RichTextEditorComponent: React.FC = () => {
     //     console.log('HTML VERSION', markup);
     // }   
 
+
     //INLINE and BLOCK LEVEL styles, consists of these functions and an array of buttons to map to span button elements
+
     const buttonVariant = (name: string) => {
         const currentInLineStyle = editorState.getCurrentInlineStyle();
         if (currentInLineStyle.has(name)) {
@@ -120,10 +132,13 @@ export const RichTextEditorComponent: React.FC = () => {
         }
     }
 
+  
+
     const onBoldClick = (event: any) => {
         event.preventDefault();
         onChange(RichUtils.toggleInlineStyle(editorState, 'BOLD'));
     }
+    
     const onItalicClick = (event: any) => {
         event.preventDefault();
         onChange(RichUtils.toggleInlineStyle(editorState, 'ITALIC'));
@@ -138,7 +153,10 @@ export const RichTextEditorComponent: React.FC = () => {
     }
     const onCodeClick = (event: any) => {
         event.preventDefault();
-        onChange(RichUtils.toggleInlineStyle(editorState, 'CODE'));
+        let editor: EditorState = editorState;
+        editor = RichUtils.toggleInlineStyle(editor, 'HIGHLIGHT');
+        editor = RichUtils.toggleInlineStyle(editor, 'CODE');
+        onChange(editor);   
     }
     const onHead1Click = (event: any) => {
         event.preventDefault();
@@ -160,19 +178,53 @@ export const RichTextEditorComponent: React.FC = () => {
         event.preventDefault();
         onChange(RichUtils.toggleBlockType(editorState, 'unordered-list-item'));
     }
+    const onAddLink = (event: any) => {
+
+        event.preventDefault();
+
+        const selection = editorState.getSelection();
+        if (!selection.isCollapsed()) {
+            let url = prompt("Select text then enter link", "");
+
+            if (!url) return
+
+            const contentState = editorState.getCurrentContent();
+            const contentStateWithEntity = contentState.createEntity(
+                'LINK',
+                'MUTABLE',
+                { url: url }
+            );
+            const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+            const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity });
+
+            onChange(RichUtils.toggleLink(
+                newEditorState,
+                newEditorState.getSelection(),
+                entityKey
+            ));
+            console.log(url);
+
+        } else {
+            alert('No text selected')
+        }
+    };
+
+  
 
     const buttons = [
-        { function: onBoldClick, name: <FormatBoldIcon/>, style: 'BOLD' },
-        { function: onItalicClick, name: <FormatItalicIcon/>, style: 'ITALIC' },
-        { function: onUnderlineClick, name: <FormatUnderlinedIcon/>, style: 'UNDERLINE' },
-        { function: onStrikethroughClick, name: <StrikethroughSIcon/>, style: 'STRIKETHROUGH' },
-        { function: onCodeClick, name: <CodeIcon/>, style: 'CODE' }]
+        { function: onBoldClick, name: <FormatBoldIcon />, style: 'BOLD' },
+        { function: onItalicClick, name: <FormatItalicIcon />, style: 'ITALIC' },
+        { function: onUnderlineClick, name: <FormatUnderlinedIcon />, style: 'UNDERLINE' },
+        { function: onStrikethroughClick, name: <StrikethroughSIcon />, style: 'STRIKETHROUGH' },
+        { function: onCodeClick, name: <CodeIcon />, style: 'CODE' }]
     const blockbuttons = [
+
         { function: onOrderClick, name: <FormatListNumberedIcon/>, block: 'ordered-list-item' },
         { function: onUnorderClick, name: <FormatListBulletedIcon/>, block: 'unordered-list-item' },
         { function: onHead1Click, name: 'H1', block: 'header-one' },
         { function: onHead2Click, name: 'H2', block: 'header-two' },
         { function: onHead3Click, name: 'H3', block: 'header-three' }]
+    const linkbutton = [{ function: onAddLink, name: <HttpIcon /> }]
 
 
     return (
@@ -187,7 +239,8 @@ export const RichTextEditorComponent: React.FC = () => {
                             {buttons.map(b =>
                                 buttonVariant(b.style) ?
                                     <span className={classes.buttonInternal}>
-                                        <Button onMouseDown={b.function} variant='contained' color='primary' size='small' >{b.name}</Button>
+                                        <Button onMouseDown={b.function}  variant='contained' color='primary' size='small' >{b.name}</Button>
+                                       
                                     </span>
                                     :
                                     <span className={classes.buttonInternal}>
@@ -205,6 +258,14 @@ export const RichTextEditorComponent: React.FC = () => {
                                         <Button onMouseDown={b.function} size='small' color='secondary' variant='contained'>{b.name}</Button>
                                     </span>)}
                         </Box>
+                        <Box justifyContent="center" display="flex"  >
+                            {linkbutton.map(b =>
+
+                                <span className={classes.buttonInternal}>
+                                    <Button onMouseDown={b.function} size='small' color='secondary' variant='contained'>{b.name}</Button>
+                                </span>
+                            )}
+                        </Box>
                     </Box >
                     <Typography variant="h4" >
                         Title:
@@ -214,9 +275,11 @@ export const RichTextEditorComponent: React.FC = () => {
                     </Typography>
                     <Box justifyContent="center" display="flex" flexDirection="column" className={classes.editorTool} >
                         <Editor
+                            customStyleMap={styleMap}
                             editorState={editorState}
                             handleKeyCommand={handleKeyCommand}
                             onChange={onChange}
+
                         />
                     </Box>
                     <Button onClick={saveQuestion} variant='contained' color='secondary' size='small' >Submit</Button>
