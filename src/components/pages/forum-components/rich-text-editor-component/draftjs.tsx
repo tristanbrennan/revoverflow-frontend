@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { Editor, EditorState, RichUtils, Entity } from 'draft-js';
+import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import { Button, createMuiTheme, makeStyles, ThemeProvider, Box, Container, Typography } from '@material-ui/core';
 import FormatBoldIcon from '@material-ui/icons/FormatBold';
