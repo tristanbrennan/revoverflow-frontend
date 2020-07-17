@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
-import { Editor, EditorState, RichUtils } from 'draft-js';
+import { Editor, EditorState, RichUtils, convertToRaw, ContentState } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import parse from 'html-react-parser';
 import 'draft-js/dist/Draft.css';
 import { Button, createMuiTheme, makeStyles, ThemeProvider, Box, Container, Typography } from '@material-ui/core';
 import FormatBoldIcon from '@material-ui/icons/FormatBold';
@@ -10,6 +12,9 @@ import StrikethroughSIcon from '@material-ui/icons/StrikethroughS';
 import CodeIcon from '@material-ui/icons/Code';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
+import * as questionRemote from '../../../../remotes/question.remote';
+import { user } from '../../../../models/user';
+import { Question } from '../../../../models/question';
 
 
 const theme = createMuiTheme({
@@ -61,6 +66,40 @@ export const RichTextEditorComponent: React.FC = () => {
             return 'not-handled';
         }
     }
+    const dummyUser: user = {
+        userID : 11,
+        RSSAccountId: 11,
+        points: 11,
+        admin: false,
+        email: 'email',
+        firstName: 'fname',
+        lastName: 'lname'
+    }
+    
+    const saveQuestion = async () => {
+        const contentState = editorState.getCurrentContent();
+        const payload: Question = {
+            title: 'test',
+            content: JSON.stringify(convertToRaw(contentState)),
+            creationDate: new Date(),
+            status: true,
+            userId: dummyUser.userID
+        }
+        await questionRemote.postQuestion(payload);
+    }
+
+    // testing the console logged content via the submit button to make sure it's working correctly
+    // ul and ol might need some work on formatting based on how it's displayed below the editor right now, will see about that
+    // const onSubmit = () => {
+    //     const contentState = editorState.getCurrentContent();
+    //     console.log('SUBMITTING DATA');
+    //     const stringState = JSON.stringify(convertToRaw(contentState));
+    //     console.log('STRING VERSION', stringState);
+    //     console.log('RETRIEVING DATA NOW');
+    //     const text = JSON.parse(stringState);
+    //     const markup = draftToHtml(text);
+    //     console.log('HTML VERSION', markup);
+    // }   
 
     //INLINE STYLES, consists of these functions, and an array of buttons to map to span button elements
     const buttonVariant = (name: string) => {
@@ -128,8 +167,8 @@ export const RichTextEditorComponent: React.FC = () => {
         { function: onStrikethroughClick, name: <StrikethroughSIcon/>, style: 'STRIKETHROUGH' },
         { function: onCodeClick, name: <CodeIcon/>, style: 'CODE' }]
     const blockbuttons = [
-        { function: onOrderClick, name: <FormatListBulletedIcon/>, block: 'ordered-list-item' },
-        { function: onUnorderClick, name: <FormatListNumberedIcon/>, block: 'unordered-list-item' },
+        { function: onOrderClick, name: <FormatListNumberedIcon/>, block: 'ordered-list-item' },
+        { function: onUnorderClick, name: <FormatListBulletedIcon/>, block: 'unordered-list-item' },
         { function: onHead1Click, name: 'H1', block: 'header-one' },
         { function: onHead2Click, name: 'H2', block: 'header-two' },
         { function: onHead3Click, name: 'H3', block: 'header-three' }]
@@ -180,7 +219,11 @@ export const RichTextEditorComponent: React.FC = () => {
                             onChange={onChange}
                         />
                     </Box>
+                    <Button onClick={saveQuestion} variant='contained' color='secondary' size='small' >Submit</Button>
                 </Box>
+                <div>
+                    {parse(draftToHtml(convertToRaw(editorState.getCurrentContent())))}
+                </div>
             </Container>
         </ThemeProvider>
         // <div className='rte-root'>

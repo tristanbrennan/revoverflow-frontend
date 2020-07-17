@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import { Question} from '../models/question';
+// import draftToHtml from 'draftjs-to-html';
 
 interface ServerQuestion {
     title: string;
@@ -8,6 +9,16 @@ interface ServerQuestion {
     status: boolean;
     user_id: number
 }
+// different get questionsByUserId function, converts the text content.
+// text content would have to be parsed before being displayed on the page still
+
+// export const  getQuestionsByUserId = async (id: number) => {
+//     const response = await Axios.get<Question[]>(`/questions/user/${id}`);
+//     return response.data.map(questions => {
+//         questions.content = draftToHtml(JSON.parse(questions.content));
+//         return questions;
+//     });
+// }
 
 export const getAllQuestionsByUserId = async (id: number) => {
     const response = await Axios.get<ServerQuestion[]>(`/questions/user/${id}`);
