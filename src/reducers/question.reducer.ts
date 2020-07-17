@@ -1,3 +1,8 @@
+/**
+@author
+Jordon Hill
+*/
+
 import { QuestionState } from '.';
 import { QuestionActionPayload, questionActionTypes } from '../actions/question.actions';
 import { Action } from 'redux';

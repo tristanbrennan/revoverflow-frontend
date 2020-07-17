@@ -1,5 +1,10 @@
+/**
+@author
+Jordon Hill
+*/
+
 import Axios from 'axios';
-import { Question} from '../models/question';
+import { Question } from '../models/question';
 
 export const getAllRecentQuestions = async () => {
     const response = await Axios.get<Question[]>(`/questions`);
