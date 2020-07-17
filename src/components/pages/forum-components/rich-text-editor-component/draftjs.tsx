@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 
-import { Editor, EditorState, RichUtils, convertToRaw,Entity } from 'draft-js';
+import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import parse from 'html-react-parser';
 import 'draft-js/dist/Draft.css';
