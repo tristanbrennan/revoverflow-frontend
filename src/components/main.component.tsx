@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { FeedContainerComponent } from './pages/feed-components/feed-container.component';
-import { ForumContainerComponent } from './pages/forum-components/forum-container.component';
+import  FeedContainerComponent  from './pages/feed-components/feed-container.component';
+import  ForumContainerComponent  from './pages/forum-components/forum-container.component';
 import { LoginComponent } from './pages/login.component/login.component';
 import { NavbarComponent } from './navbar.component';
 import { RichTextEditorComponent } from './pages/forum-components/rich-text-editor-component/draftjs';

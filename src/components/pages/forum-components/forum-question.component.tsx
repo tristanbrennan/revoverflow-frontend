@@ -7,6 +7,7 @@ const useStyles = makeStyles({
         marginBottom: 5,
         marginTop: 10,
         borderBottomStyle: "solid",
+        borderLeftStyle: "solid",
         borderColor: "#f26925",
         padding: 10
     },
@@ -28,9 +29,8 @@ const theme = createMuiTheme({
 });
 
 interface ForumQuestionComponentProps {
-    username: string;
-    title: string;
-    body: String;
+    question: any;
+    storeQuestion: any;
 }
 
 const confirmAnswer = () => {
@@ -38,11 +38,10 @@ const confirmAnswer = () => {
     //! attributes points to question owner's user account 
 }
 
-
 export const ForumQuestionComponent: React.FC<ForumQuestionComponentProps> = (props) => {
     const classes = useStyles();
-    //! logic that conditionally renders the confirm button 
-    // const admin = (localStorage.getItem("userId")) && acceptedAnswerId;
+    // const admin = (localStorage.getItem("userId")) && acceptedAnswerId; 
+    console.log(props.question)
     const admin = true;
 
     return (
@@ -50,18 +49,26 @@ export const ForumQuestionComponent: React.FC<ForumQuestionComponentProps> = (pr
             <Container >
                 <Card className={classes.boxInternal}>
                     <Box justifyContent="space-between" display="flex" flexDirection="row" color="primary">
-                        <Box textAlign="left" >
-                            <h3>{props.title}</h3>
-                            <p>{props.body}</p>
-                            <footer>{props.username} <br />01/01/2020</footer>
-                        </Box>
+                        {props.storeQuestion ?
+                            <Box textAlign="left" >
+                                <h2>{props.storeQuestion.title}</h2>
+                                <p>{props.storeQuestion.content}</p>
+                                <footer>{props.storeQuestion.userId} <br />{props.storeQuestion.creationDate}</footer>
+                            </Box>
+                            :
+                            <Box textAlign="left" >
+                                <h2>{props.question.title}</h2>
+                                <p>{props.question.content}</p>
+                                <footer>{props.question.userId} <br />{props.question.creationDate}</footer>
+                            </Box>
+                        }
                         <Box>
                             {admin ?
-                            <Button variant="contained" color="secondary" onClick={() => confirmAnswer()}>
-                                Confirm
+                                <Button variant="contained" color="secondary" onClick={() => confirmAnswer()}>
+                                    Confirm
                             </Button>
-                            :
-                            ""}
+                                :
+                                ""}
                         </Box>
                     </Box>
                 </Card>
@@ -69,5 +76,3 @@ export const ForumQuestionComponent: React.FC<ForumQuestionComponentProps> = (pr
         </ThemeProvider>
     )
 }
-
-//!Make button visible when isAdmin is true

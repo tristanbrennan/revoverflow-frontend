@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Container, createMuiTheme, ThemeProvider, Box, Button, makeStyles } from '@material-ui/core';
@@ -10,6 +10,12 @@ import ConfirmationNumberOutlinedIcon from '@material-ui/icons/ConfirmationNumbe
 import Pagination from '@material-ui/lab/Pagination';
 import { BreadcrumbBarComponent } from '../breadcrumb-bar.component';
 import { useHistory } from 'react-router';
+import * as fallbackRemote from '../../../remotes/fallback.remote';
+import { Question } from '../../../models/question';
+import { IState } from '../../../reducers';
+import { connect } from 'react-redux';
+import { clickQuestion } from '../../../actions/question.actions';
+
 
 const drawerWidth = 100;
 const theme = createMuiTheme({
@@ -37,30 +43,65 @@ const useStyles = makeStyles({
     }
 });
 
-export const FeedContainerComponent: React.FC = () => {
+export interface FeedContainerComponentProps {
+    storeQuestions: Question[]
+    storeQuestion: any;
+    clickQuestion: (question: Question) => void;
+}
+
+export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (props) => {
     const classes = useStyles();
     const history = useHistory();
-    const [value, setValue] = React.useState(2);
-    // const admin = (localStorage.getItem("userId"))
+    const [questions, setQuestions] = useState<Question[]>([])
+    const [view, setView] = useState<'question' | 'answer' | 'confirm' | 'recent'>('recent');
+    const [value, setValue] = React.useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [page, setPage] = useState(0);
+
+    // const userId = (localStorage.getItem("userId"))
+    // const admin = (localStorage.getItem("admin"))
     const admin = true;
+    const userId = 13;
+    const size = 10;
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
     };
 
-    const data = ['Yuri', 'What is the Formula for Concentrated Dark matter?', 'I have been wondering for the longest time, does anyone know the formula for concentrated dark matter?']
-    const Posts: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+        load(view, value - 1);
+    };
 
-    const renderFeedBoxComponents = () => {
-        return Posts.map(post => {
-            return (
-                <FeedBoxComponent username={data[0]} title={data[1]} body={data[2]} />
-            )
-        })
+    const load = async (view: string, page: number) => {
+        let retrievedPageable: any;
+        if (view === 'recent') {
+            retrievedPageable = await fallbackRemote.getAllQuestions(size, page);
+            setView(view);
+        } else if (view === 'question') {
+            retrievedPageable = await fallbackRemote.getQuestionsByUserId(userId, size, page);
+            setView(view)
+        } else if (view === 'answer') {
+            retrievedPageable = await fallbackRemote.getAnswersByUserId(userId, size, page);
+            setView(view)
+        } else if (view === 'confirm') {
+            retrievedPageable = await fallbackRemote.getUnconfirmedQuestions(size, page);
+            setView(view)
+        }
+        setTotalPages(retrievedPageable.totalPages);
+        setQuestions(retrievedPageable.content);
     }
 
-    const load = (e: string) => {
-        console.log(e)
+    if (questions.length === 0 && view === 'recent') {
+        load("recent", 0);
+    }
+
+    const renderFeedBoxComponents = () => {
+        return questions.map(question => {
+            return (
+                <FeedBoxComponent question={question} storeQuestion={props.storeQuestion} clickQuestion={props.clickQuestion} />
+            )
+        })
     }
 
     const handleRedirect = () => {
@@ -87,13 +128,14 @@ export const FeedContainerComponent: React.FC = () => {
                             variant="fullWidth"
                             onChange={handleChange}
                         >
+                            {admin ? <Tab icon={<ConfirmationNumberOutlinedIcon fontSize="large" onClick={(e) => load("confirm", 0)} />}
+                                label="CONFIRM" className={classes.boxInternal} /> : ""}
                             <Tab icon={<DynamicFeedOutlinedIcon fontSize="large" />} label="RECENT" className={classes.boxInternal}
-                                        onClick={(e) => load("recent")} />
+                                onClick={(e) => load("recent", 0)} />
                             <Tab icon={<HelpOutlinedIcon fontSize="large" />} label="MY QUESTIONS" className={classes.boxInternal}
-                                        onClick={(e) => load("questions")} />
+                                onClick={(e) => load("question", 0)} />
                             <Tab icon={<QuestionAnswerIcon fontSize="large" />} label="MY ANSWERS" className={classes.boxInternal}
-                                        onClick={(e) => load("answers")}/>
-                            {admin ? <Tab icon={<ConfirmationNumberOutlinedIcon fontSize="large" onClick={(e) => load("confirm")} />} label="CONFIRM" className={classes.boxInternal} /> : ""}
+                                onClick={(e) => load("answer", 0)} />
                         </Tabs>
                     </Box>
                     <div style={{ width: '100%' }}>
@@ -102,7 +144,7 @@ export const FeedContainerComponent: React.FC = () => {
                         </Box>
                     </div>
                     <Box display="flex" justifyContent="center" padding={5}>
-                        <Pagination size="medium" count={10} color="secondary" />
+                        <Pagination size="medium" count={totalPages} page={page} color="secondary" onChange={handlePageChange} />
                     </Box>
                 </ThemeProvider>
             </Container>
@@ -110,7 +152,19 @@ export const FeedContainerComponent: React.FC = () => {
     );
 }
 
-export default FeedContainerComponent;
+const mapStateToProps = (state: IState) => {
+    return {
+        storeQuestions: state.questionState.collectedQuestions,
+        storeQuestion: state.questionState.storeQuestion,
+    }
+}
+
+const mapDispatchToProps = {
+    clickQuestion,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FeedContainerComponent);
+
 
 //!Pagination of Feed items
 //!Button on click goes to post a question page

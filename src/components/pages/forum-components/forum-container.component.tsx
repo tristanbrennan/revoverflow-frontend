@@ -1,9 +1,28 @@
-import React, { useState } from 'react';
-import { Box, Container, makeStyles } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { Box, Container, makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core';
 import { ForumAnswerComponent } from './forum-answer.component';
 import { ForumQuestionComponent } from './forum-question.component';
+import { ForumAcceptedAnswerComponent } from './forum-accepted-answer.component';
 import { BreadcrumbBarComponent } from '../breadcrumb-bar.component';
+import * as fallbackRemote from '../../../remotes/fallback.remote';
+import { Answer } from '../../../models/answer';
+import { IState } from '../../../reducers';
+import { connect } from 'react-redux';
+import Pagination from '@material-ui/lab/Pagination';
+import { Question } from '../../../models/question';
+import { acceptAnswer } from '../../../actions/answer.actions';
 
+
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: '#f26925',
+        },
+        secondary: {
+            main: '#3498db',
+        },
+    },
+});
 
 const drawerWidth = 100;
 const useStyles = makeStyles({
@@ -20,45 +39,127 @@ const useStyles = makeStyles({
     }
 });
 
-const dataQ = ['Yuri', 'What is the Formula for Concentrated Dark matter?', 'I have been wondering for the longest time, does anyone know the formula for concentrated dark matter?']
-const PostsA: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const PostsQ: any[] = [1];
-const dataA = ['Michel', 'If you are a Zigerion do not read beyond this point', 'two parts plutonic quarks (pink) and one part cesium (green)']
+export interface ForumContainerComponentProps {
+    storeQuestion: any;
+    storeAnswer: any;
+    storeAnswers: Answer[];
+    acceptAnswer: (answer: Answer) => void;
 
-export const ForumContainerComponent: React.FC = () => {
+}
+
+export const ForumContainerComponent: React.FC<ForumContainerComponentProps> = (props) => {
     const classes = useStyles();
     const [selected, setSelected] = useState(false);
+    const [answers, setAnswers] = useState<Answer[]>([]);
+    const [question, setQuestion] = useState<Question[]>([]);
+    const [totalPages, setTotalPages] = useState(0);
+    const [page, setPage] = useState(0);
+    const [answer, setAnswer] = useState<Answer[]>([]);
+
+    const size = 10;
+    let retrievedQuestion: any;
+    let retrievedAnswer: any;
+
+    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+        load(value - 1);
+    };
+
+    const load = async (page: number) => {
+        let retrievedAnswerPageable: any;
+        if (props.storeQuestion) {
+            retrievedAnswerPageable = await fallbackRemote.getAnswersByQuestionId(props.storeQuestion.id, size, page);
+            retrievedQuestion = props.storeQuestion;
+        } else {
+            retrievedAnswerPageable = await fallbackRemote.getAnswersByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))), size, page);
+            retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))));
+        }
+
+        setTotalPages(retrievedAnswerPageable.totalPages);
+        setAnswers(retrievedAnswerPageable.content);
+        setQuestion([retrievedQuestion]);
+    }
+
+    if (props.storeQuestion && (answers.length === 0)) {
+        load(0);
+    } else if (!props.storeQuestion && (answers.length === 0)) {
+        load(0);
+    }
+
+    const reload = async () => {
+            const reQuestionId = +JSON.parse(JSON.stringify(localStorage.getItem('questionId')))
+            try {
+                retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(reQuestionId);
+                retrievedAnswer = await fallbackRemote.getAnswerByAnswerId(retrievedQuestion.acceptedId);
+            } catch {
+                return;
+            }
+            setAnswer([retrievedAnswer]);
+    }
+
+    useEffect(() => {
+        reload();
+    }, [])
 
 
-    const renderForumAnswerComponents = () => {
-        return PostsA.map(post => {
+    const renderForumQuestionComponents = () => {
+        return question.map(question => {
             return (
-                <ForumAnswerComponent username={dataA[0]} title={dataA[1]} body={dataA[2]} selected={selected} setSelected={setSelected} />
+                <ForumQuestionComponent storeQuestion={props.storeQuestion} question={question} />
             )
         })
     }
 
-    const renderForumQuestionComponents = () => {
-        return PostsQ.map(post => {
+    const renderForumAcceptedAnswerComponents = () => {
+        return answer.map(answer => {
             return (
-                <ForumQuestionComponent username={dataQ[0]} title={dataQ[1]} body={dataQ[2]} />
+                <ForumAcceptedAnswerComponent storeAnswer={props.storeAnswer} answer={answer} selected={selected} storeQuestion={props.storeQuestion} question={question} />
+            )
+        })
+    }
+
+    const renderForumAnswerComponents = () => {
+        return answers.map(answer => {
+            return (
+                <ForumAnswerComponent answer={answer} setSelected={setSelected} selected={selected} acceptAnswer={props.acceptAnswer} storeQuestion={props.storeQuestion} question={question}/>
             )
         })
     }
 
     return (
         <div className={classes.breadcrumbBar}>
-            <BreadcrumbBarComponent />
-        <Container className={classes.containerInternal} >
-            <div style={{ width: '100%' }}>
-                <Box justifyContent="center" display="flex" flexDirection="column">
-                    {renderForumQuestionComponents()}
-                    {renderForumAnswerComponents()}
+            <ThemeProvider theme={theme}>
+                <BreadcrumbBarComponent />
+                <Container className={classes.containerInternal} >
+                    <div style={{ width: '100%' }}>
+                        <Box justifyContent="center" display="flex" flexDirection="column">
+                            {renderForumQuestionComponents()}
+                            {renderForumAcceptedAnswerComponents()}
+                            {renderForumAnswerComponents()}
+                        </Box>
+                    </div>
+                </Container>
+                <Box display="flex" justifyContent="center" padding={5}>
+                    <Pagination size="medium" count={totalPages} page={page} color="secondary" onChange={handlePageChange} />
                 </Box>
-            </div>
-        </Container>
+            </ThemeProvider>
         </div>
     )
 }
 
+const mapStateToProps = (state: IState) => {
+    return {
+        storeQuestion: state.questionState.storeQuestion,
+        storeAnswer: state.answerState.storeAnswer,
+        storeAnswers: state.answerState.collectedAnswers,
+    }
+}
+
+const mapDispatchToProps = {
+    acceptAnswer,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForumContainerComponent);
+
 //! Make component just for question
+
