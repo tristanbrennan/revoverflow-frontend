@@ -3,8 +3,8 @@ import { AnswerActionPayload, answerActionTypes } from '../actions/answer.action
 import { Action } from 'redux';
 
 const initialState: AnswerState = {
-    collectedAnswers: [],
-    storeAnswer: undefined
+    collectedAnswers: JSON.parse((localStorage.getItem('answers')) || '{}'),
+    storeAnswer: JSON.parse((localStorage.getItem('selectedAnswer')) || '{}')
 }
 
 export const answerReducer = (state: AnswerState = initialState,

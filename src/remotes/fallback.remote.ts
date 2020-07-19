@@ -4,7 +4,6 @@ import { user } from '../models/user';
 import { Answer } from '../models/answer';
 
 
-
 // export const getAllQuestions = async () => {
 //     const response = await internalAxios.get<Question[]>('/question/all/question');
 //     return response.data.map(question => {
@@ -49,6 +48,7 @@ import { Answer } from '../models/answer';
 
 export const getAllQuestions = async (size: number, page: number) => {
     const response = await internalAxios.get<any>(`/questions?size=${size}&page=${page}`);
+    // console.log(parse(draftToHtml(response.data.content[2].content)));
     return response.data;
 }
 

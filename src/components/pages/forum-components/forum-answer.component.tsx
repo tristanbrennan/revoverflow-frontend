@@ -5,6 +5,9 @@ import { green } from '@material-ui/core/colors';
 import { Answer } from '../../../models/answer';
 import * as fallbackRemote from '../../../remotes/fallback.remote';
 import { Question } from '../../../models/question';
+import { IState } from '../../../reducers';
+import { connect } from 'react-redux';
+import { acceptAnswer } from '../../../actions/answer.actions';
 
 
 const useStyles = makeStyles({
@@ -56,7 +59,6 @@ interface ForumAnswerComponentProps {
     selected: boolean;
     setSelected: (selected: boolean) => void;
     acceptAnswer: (answer: Answer) => void;
-
 }
 
 export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props) => {
@@ -128,6 +130,7 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
             await fallbackRemote.updateQuestionAcceptedAnswerId(payload);
             props.acceptAnswer(props.answer);
             localStorage.setItem('answerId', JSON.stringify(props.answer.id));
+            localStorage.setItem('selectedAnswer', JSON.stringify(props.answer));
         } catch {
             alert("You encountered an error")
             return;
@@ -143,7 +146,7 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
     };
 
     if (!(currentQuestion.acceptedId !== props.answer.id)) {
-        return <div></div>;
+        return <div />;
     } else {
         return (
             <ThemeProvider theme={theme}>
@@ -214,3 +217,15 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
         )
     }
 }
+
+const mapStateToProps = (state: IState) => {
+    return {
+        // storeAnswers: state.answerState.collectedAnswers
+    }
+}
+
+const mapDispatchToProps = {
+    acceptAnswer,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForumAnswerComponent);

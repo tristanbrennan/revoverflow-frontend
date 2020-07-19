@@ -257,21 +257,21 @@ export const RichTextEditorComponent: React.FC = () => {
                             {buttons.map(b =>
                                 buttonVariant(b.style) ?
                                     <span className={classes.buttonInternal}>
-                                        <Button onMouseDown={b.function} variant='contained' color='primary' size='small' >{b.name}</Button>
+                                        <Button key={b.style} onMouseDown={b.function} variant='contained' color='primary' size='small' >{b.name}</Button>
 
                                     </span>
                                     :
                                     <span className={classes.buttonInternal}>
-                                        <Button onMouseDown={b.function} size='small' color='secondary' variant='contained' >{b.name} </Button>
+                                        <Button key={b.style} onMouseDown={b.function} size='small' color='secondary' variant='contained' >{b.name} </Button>
                                     </span>)}
                             {blockbuttons.map(b =>
-                                blockbuttonVariant(b.block) ?
+                                blockbuttonVariant (b.block) ?
                                     <span className={classes.buttonInternal}>
-                                        <Button onMouseDown={b.function} variant='contained' color='primary' size='small' >{b.name}</Button>
+                                        <Button key={b.block} onMouseDown={b.function} variant='contained' color='primary' size='small' >{b.name}</Button>
                                     </span>
                                     :
                                     <span className={classes.buttonInternal}>
-                                        <Button onMouseDown={b.function} size='small' color='secondary' variant='contained'>{b.name}</Button>
+                                        <Button key={b.block} onMouseDown={b.function} size='small' color='secondary' variant='contained'>{b.name}</Button>
                                     </span>)}
                             {linkbutton.map(b =>
                                 <span className={classes.buttonInternal}>

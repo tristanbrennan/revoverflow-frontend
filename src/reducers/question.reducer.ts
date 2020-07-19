@@ -7,9 +7,10 @@ import { QuestionState } from '.';
 import { QuestionActionPayload, questionActionTypes } from '../actions/question.actions';
 import { Action } from 'redux';
 
+
 const initialState: QuestionState = {
     collectedQuestions: [],
-    storeQuestion: undefined
+    storeQuestion: JSON.parse((localStorage.getItem('question')) || '{}'),
 }
 
 export const questionReducer = (state: QuestionState = initialState,

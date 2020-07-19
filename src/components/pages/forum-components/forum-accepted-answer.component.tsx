@@ -71,7 +71,6 @@ export const ForumAcceptedAnswerComponent: React.FC<ForumAcceptedAnswerComponent
         userId: 0
     })
 
-    
     useEffect(() => {
         const getCurrentQuestion = async () => {
             const retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))));
@@ -89,27 +88,15 @@ export const ForumAcceptedAnswerComponent: React.FC<ForumAcceptedAnswerComponent
                     <Box justifyContent="flex-start" display="flex" flexDirection="row" className={classes.boxInternal}>
                         <Box>
                             <Box>
-                                {props.storeAnswer ?
-                                    <Box justifyContent="flex-start" display="flex">
-                                        <FormControlLabel
-                                            control={<DoneIcon className={classes.checkSize} />} label=""
-                                            style={{ color: green[500] }} />
-                                        <Box textAlign="left">
-                                            <p>{props.storeAnswer.content}</p>
-                                            <footer>{props.storeAnswer.userId} <br />{props.storeAnswer.creationDate}</footer>
-                                        </Box>
+                                <Box justifyContent="flex-start" display="flex">
+                                    <FormControlLabel
+                                        control={<DoneIcon className={classes.checkSize} />} label=""
+                                        style={{ color: green[500] }} />
+                                    <Box textAlign="left">
+                                        <p>{props.answer.content}</p>
+                                        <footer>{props.answer.userId} <br />{props.answer.creationDate}</footer>
                                     </Box>
-                                    :
-                                    <Box justifyContent="flex-start" display="flex">
-                                        <FormControlLabel
-                                            control={<DoneIcon className={classes.checkSize} />} label=""
-                                            style={{ color: green[500] }} />
-                                        <Box textAlign="left">
-                                            <p>{props.answer.content}</p>
-                                            <footer>{props.answer.userId} <br />{props.answer.creationDate}</footer>
-                                        </Box>
-                                    </Box>
-                                }
+                                </Box>
                             </Box>
                         </Box>
                     </Box>

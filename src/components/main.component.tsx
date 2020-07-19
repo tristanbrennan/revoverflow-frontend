@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import  FeedContainerComponent  from './pages/feed-components/feed-container.component';
 import  ForumContainerComponent  from './pages/forum-components/forum-container.component';
@@ -15,7 +15,7 @@ export const MainComponent: React.FC = () => {
                     <Route exact path="/">
                         <LoginComponent />
                     </Route>
-                    <div>
+                    <Fragment>
                         <NavbarComponent />
                         <Route exact path="/feed">
                             <FeedContainerComponent />
@@ -33,7 +33,7 @@ export const MainComponent: React.FC = () => {
                         <Route exact path="/texteditor">
                             <RichTextEditorComponent />
                         </Route>
-                    </div>
+                    </Fragment>
                 </Switch>
             </main>
         </BrowserRouter>

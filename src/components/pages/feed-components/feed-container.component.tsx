@@ -94,14 +94,10 @@ export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (pr
         load("recent", 0);
     }
 
-    // useEffect(() => {
-    //     load("recent", 0);
-    // }, [])
-
     const renderFeedBoxComponents = () => {
         return questions.map(question => {
             return (
-                <FeedBoxComponent question={question} storeQuestion={props.storeQuestion} clickQuestion={props.clickQuestion} />
+                <FeedBoxComponent key={question.id} question={question} clickQuestion={props.clickQuestion} />
             )
         })
     }
@@ -166,7 +162,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedContainerComponent);
-
-
-//!Pagination of Feed items
-//!Button on click goes to post a question page
