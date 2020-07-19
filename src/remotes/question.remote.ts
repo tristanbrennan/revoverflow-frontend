@@ -4,6 +4,7 @@ Jordon Hill
 */
 
 import Axios from 'axios';
+import { internalAxios } from './internal.axios'
 import { Question} from '../models/question';
 // import draftToHtml from 'draftjs-to-html';
 
@@ -48,13 +49,13 @@ export const getQuestionByQuestionId = async (id: number) => {
 }
 
 export const postQuestion = async (question: Question) => {
-    const response = await Axios.post<Question>(`/question`, question);
+    const response = await internalAxios.post<Question>(`/questions`, question);
     response.data.creationDate = new Date(response.data.creationDate);
     return response.data;
 }
 
 export const updateStatus = async (question: Question) => {
-    const response = await Axios.post<Question>(`/question`, question);
+    const response = await Axios.post<Question>(`/questions`, question);
     response.data.creationDate = new Date(response.data.creationDate);
     return response.data;
 }
