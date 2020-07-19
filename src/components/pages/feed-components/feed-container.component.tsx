@@ -54,14 +54,12 @@ export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (pr
     const history = useHistory();
     const [questions, setQuestions] = useState<Question[]>([])
     const [view, setView] = useState<'question' | 'answer' | 'confirm' | 'recent'>('recent');
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [page, setPage] = useState(0);
 
-    // const userId = (localStorage.getItem("userId"))
-    // const admin = (localStorage.getItem("admin"))
-    const admin = true;
-    const userId = 13;
+    const userId = (+JSON.parse(JSON.stringify(localStorage.getItem('userId'))));
+    const admin = (localStorage.getItem("admin"));
     const size = 10;
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -96,6 +94,10 @@ export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (pr
         load("recent", 0);
     }
 
+    // useEffect(() => {
+    //     load("recent", 0);
+    // }, [])
+
     const renderFeedBoxComponents = () => {
         return questions.map(question => {
             return (
@@ -128,7 +130,7 @@ export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (pr
                             variant="fullWidth"
                             onChange={handleChange}
                         >
-                            {admin ? <Tab icon={<ConfirmationNumberOutlinedIcon fontSize="large" onClick={(e) => load("confirm", 0)} />}
+                            {admin === 'true' ? <Tab icon={<ConfirmationNumberOutlinedIcon fontSize="large" onClick={(e) => load("confirm", 0)} />}
                                 label="CONFIRM" className={classes.boxInternal} /> : ""}
                             <Tab icon={<DynamicFeedOutlinedIcon fontSize="large" />} label="RECENT" className={classes.boxInternal}
                                 onClick={(e) => load("recent", 0)} />

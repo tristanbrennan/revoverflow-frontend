@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Container, makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core';
 import { ForumAnswerComponent } from './forum-answer.component';
-import { ForumQuestionComponent } from './forum-question.component';
-import { ForumAcceptedAnswerComponent } from './forum-accepted-answer.component';
+import ForumQuestionComponent from './forum-question.component';
+import ForumAcceptedAnswerComponent from './forum-accepted-answer.component';
 import { BreadcrumbBarComponent } from '../breadcrumb-bar.component';
 import * as fallbackRemote from '../../../remotes/fallback.remote';
 import { Answer } from '../../../models/answer';
@@ -44,7 +44,6 @@ export interface ForumContainerComponentProps {
     storeAnswer: any;
     storeAnswers: Answer[];
     acceptAnswer: (answer: Answer) => void;
-
 }
 
 export const ForumContainerComponent: React.FC<ForumContainerComponentProps> = (props) => {
@@ -74,38 +73,32 @@ export const ForumContainerComponent: React.FC<ForumContainerComponentProps> = (
             retrievedAnswerPageable = await fallbackRemote.getAnswersByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))), size, page);
             retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))));
         }
-
         setTotalPages(retrievedAnswerPageable.totalPages);
         setAnswers(retrievedAnswerPageable.content);
         setQuestion([retrievedQuestion]);
     }
 
-    if (props.storeQuestion && (answers.length === 0)) {
-        load(0);
-    } else if (!props.storeQuestion && (answers.length === 0)) {
-        load(0);
-    }
 
     const reload = async () => {
-            const reQuestionId = +JSON.parse(JSON.stringify(localStorage.getItem('questionId')))
-            try {
-                retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(reQuestionId);
-                retrievedAnswer = await fallbackRemote.getAnswerByAnswerId(retrievedQuestion.acceptedId);
-            } catch {
-                return;
-            }
-            setAnswer([retrievedAnswer]);
+        const reQuestionId = +JSON.parse(JSON.stringify(localStorage.getItem('questionId')))
+        try {
+            retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(reQuestionId);
+            retrievedAnswer = await fallbackRemote.getAnswerByAnswerId(retrievedQuestion.acceptedId);
+        } catch {
+            return;
+        }
+        setAnswer([retrievedAnswer]);
     }
 
     useEffect(() => {
+        load(0);
         reload();
     }, [])
-
 
     const renderForumQuestionComponents = () => {
         return question.map(question => {
             return (
-                <ForumQuestionComponent storeQuestion={props.storeQuestion} question={question} />
+                <ForumQuestionComponent question={question} />
             )
         })
     }
@@ -113,7 +106,7 @@ export const ForumContainerComponent: React.FC<ForumContainerComponentProps> = (
     const renderForumAcceptedAnswerComponents = () => {
         return answer.map(answer => {
             return (
-                <ForumAcceptedAnswerComponent storeAnswer={props.storeAnswer} answer={answer} selected={selected} storeQuestion={props.storeQuestion} question={question} />
+                <ForumAcceptedAnswerComponent answer={answer} selected={selected} />
             )
         })
     }
@@ -121,7 +114,7 @@ export const ForumContainerComponent: React.FC<ForumContainerComponentProps> = (
     const renderForumAnswerComponents = () => {
         return answers.map(answer => {
             return (
-                <ForumAnswerComponent answer={answer} setSelected={setSelected} selected={selected} acceptAnswer={props.acceptAnswer} storeQuestion={props.storeQuestion} question={question}/>
+                <ForumAnswerComponent answer={answer} setSelected={setSelected} selected={selected} acceptAnswer={props.acceptAnswer} />
             )
         })
     }
@@ -161,5 +154,9 @@ const mapDispatchToProps = {
 
 export default connect(mapStateToProps, mapDispatchToProps)(ForumContainerComponent);
 
-//! Make component just for question
+    // if (props.storeQuestion && (answers.length === 0)) {
+    //     load(0);
+    // } else if (!props.storeQuestion && (answers.length === 0)) {
+    //     load(0);
+    // }
 

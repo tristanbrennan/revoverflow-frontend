@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles, Box, FormControlLabel, Modal, Fade, Backdrop, Button, Container, createMuiTheme, ThemeProvider } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
 import { green } from '@material-ui/core/colors';
@@ -56,8 +56,7 @@ interface ForumAnswerComponentProps {
     selected: boolean;
     setSelected: (selected: boolean) => void;
     acceptAnswer: (answer: Answer) => void;
-    question: any;
-    storeQuestion: any;
+
 }
 
 export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props) => {
@@ -75,13 +74,13 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
     })
 
     const getCurrentQuestion = async () => {
-        const retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))));
+        const retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(props.answer.questionId);
         setCurrentQuestion(retrievedQuestion);
     }
 
-    if (currentQuestion.acceptedId === 0) {
+    useEffect(() => {
         getCurrentQuestion();
-    }
+    }, [])
 
     const selectAnswer = async () => {
         if (currentQuestion.acceptedId) {
@@ -108,15 +107,22 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
     };
 
     const handleCloseSubmit = async () => {
+        let questionInfo: Question;
+        try {
+            questionInfo = await fallbackRemote.getQuestionByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))))
+        } catch {
+            alert("You encountered an error")
+            return;
+        }
         const payload = {
-            id: 2,
+            id: questionInfo.id,
             acceptedId: props.answer.id,
-            title: "test",
-            content: "test",
-            creationDate: "2012-12-12",
+            title: questionInfo.title,
+            content: questionInfo.content,
+            creationDate: questionInfo.creationDate,
             editDate: null,
             status: false,
-            userID: 13
+            userID: +JSON.parse(JSON.stringify(localStorage.getItem('userId')))
         };
 
         try {
@@ -127,7 +133,6 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
             alert("You encountered an error")
             return;
         }
-
         props.setSelected(true);
         setOpen(false);
     };
@@ -137,13 +142,15 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
         setOpen(false);
     };
 
-    return (
-        <ThemeProvider theme={theme}>
-            <Container>
-                {currentQuestion.acceptedId !== props.answer.id ?
+    if (!(currentQuestion.acceptedId !== props.answer.id)) {
+        return <div></div>;
+    } else {
+        return (
+            <ThemeProvider theme={theme}>
+                <Container>
                     <Box justifyContent="flex-start" display="flex" flexDirection="row" className={classes.boxInternal}>
                         {(currentQuestion.acceptedId === null) ?
-                            <Box>
+                            <Box justifyContent="flex-start" display="flex">
                                 <Box justifyContent="flex-start" display="flex">
                                     {color === true ?
                                         <FormControlLabel
@@ -162,7 +169,7 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
                             </Box>
                             :
                             <Box justifyContent="flex-start" display="flex">
-                                <Box>
+                                <Box justifyContent="flex-start" display="flex">
                                     <FormControlLabel
                                         control={<DoneIcon className={classes.checkSize} />} label=""
                                     />
@@ -174,38 +181,36 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
                             </Box>
                         }
                     </Box>
-                    :
-                    ""
-                }
 
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    className={classes.modal}
-                    open={open}
-                    // onClose={handleClose}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={open} >
-                        <div className={classes.paper}>
-                            <h2 id="transition-modal-title">Confirm Answer Selection</h2>
-                            <p id="transition-modal-description">Are you sure this answer wholly answers your question?</p>
-                            <Box className={classes.modalInternal}>
-                                <Button variant="contained" color="secondary" onClick={handleCloseSubmit} className={classes.buttonInternal} >
-                                    Confirm
+                    <Modal
+                        aria-labelledby="transition-modal-title"
+                        aria-describedby="transition-modal-description"
+                        className={classes.modal}
+                        open={open}
+                        // onClose={handleClose}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <Fade in={open} >
+                            <div className={classes.paper}>
+                                <h2 id="transition-modal-title">Confirm Answer Selection</h2>
+                                <p id="transition-modal-description">Are you sure this answer wholly answers your question?</p>
+                                <Box className={classes.modalInternal}>
+                                    <Button variant="contained" color="secondary" onClick={handleCloseSubmit} className={classes.buttonInternal} >
+                                        Confirm
                         </Button>
-                                <Button variant="contained" color="secondary" onClick={handleCloseCancel} className={classes.buttonInternal} >
-                                    Cancel
+                                    <Button variant="contained" color="secondary" onClick={handleCloseCancel} className={classes.buttonInternal} >
+                                        Cancel
                         </Button>
-                            </Box>
-                        </div>
-                    </Fade>
-                </Modal>
-            </Container>
-        </ThemeProvider>
-    )
+                                </Box>
+                            </div>
+                        </Fade>
+                    </Modal>
+                </Container>
+            </ThemeProvider>
+        )
+    }
 }

@@ -1,4 +1,4 @@
-import { internalAxios } from './internal-Axios'
+import { internalAxios } from './internal.axios'
 import { Question } from '../models/question';
 import { user } from '../models/user';
 import { Answer } from '../models/answer';

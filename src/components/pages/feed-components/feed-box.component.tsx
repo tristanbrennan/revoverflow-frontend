@@ -26,13 +26,15 @@ export const FeedBoxComponent: React.FC<FeedBoxComponentProps> = (props) => {
 
     const handleRedirectQ = () => {
         props.clickQuestion(props.question);
-        localStorage.setItem("questionId", props.question.id);
+        localStorage.setItem("questionId", JSON.stringify(props.question.id));
+        localStorage.setItem("question", JSON.stringify(props.question));
         history.push('/forum');
     }
 
     const handleRedirectA = async () => {
         const retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(props.question.questionId);
         localStorage.setItem("questionId", JSON.stringify(retrievedQuestion.id));
+        localStorage.setItem("question", JSON.stringify(retrievedQuestion));
         props.clickQuestion(retrievedQuestion);
         history.push('/forum');
     }
@@ -55,6 +57,3 @@ export const FeedBoxComponent: React.FC<FeedBoxComponentProps> = (props) => {
         </Card>
     )
 }
-
-
-//!Onlick redirect to Forum page and Pass Question Id

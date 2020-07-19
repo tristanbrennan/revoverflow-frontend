@@ -1,5 +1,9 @@
 import React from 'react';
 import { makeStyles, Box, Container, Button, Card, createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { IState } from '../../../reducers';
+import { Question } from '../../../models/question';
+import * as fallbackRemote from '../../../remotes/fallback.remote';
 
 
 const useStyles = makeStyles({
@@ -33,16 +37,37 @@ interface ForumQuestionComponentProps {
     storeQuestion: any;
 }
 
-const confirmAnswer = () => {
-    //! logic to update the question entity status boolean
-    //! attributes points to question owner's user account 
+const confirmAnswer = async () => {
+    let questionInfo: Question;
+    try {
+        questionInfo = await fallbackRemote.getQuestionByQuestionId( +JSON.parse(JSON.stringify(localStorage.getItem('questionId'))))
+    } catch {
+        alert("You encountered an error")
+        return;
+    }
+    const payload = {
+        id: questionInfo.id,
+        acceptedId: questionInfo.acceptedId,
+        title: questionInfo.title,
+        content: questionInfo.content,
+        creationDate: questionInfo.creationDate,
+        editDate: null,
+        status: true,
+        userID: +JSON.parse(JSON.stringify(localStorage.getItem('userId')))
+    };
+
+    try {
+        await fallbackRemote.updateQuestionStatus(payload);
+        window.location.reload(false);
+    } catch {
+        alert("You encountered an error")
+        return;
+    } 
 }
 
 export const ForumQuestionComponent: React.FC<ForumQuestionComponentProps> = (props) => {
     const classes = useStyles();
-    // const admin = (localStorage.getItem("userId")) && acceptedAnswerId; 
-    console.log(props.question)
-    const admin = true;
+    const admin = (localStorage.getItem("admin"));
 
     return (
         <ThemeProvider theme={theme} >
@@ -63,7 +88,7 @@ export const ForumQuestionComponent: React.FC<ForumQuestionComponentProps> = (pr
                             </Box>
                         }
                         <Box>
-                            {admin ?
+                            {((admin === 'true') && (props.question.status === false) && (props.question.acceptedId !== null)) ?
                                 <Button variant="contained" color="secondary" onClick={() => confirmAnswer()}>
                                     Confirm
                             </Button>
@@ -76,3 +101,15 @@ export const ForumQuestionComponent: React.FC<ForumQuestionComponentProps> = (pr
         </ThemeProvider>
     )
 }
+
+const mapStateToProps = (state: IState) => {
+    return {
+        storeQuestion: state.questionState.storeQuestion,
+    }
+}
+
+const mapDispatchToProps = {
+    
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForumQuestionComponent);
