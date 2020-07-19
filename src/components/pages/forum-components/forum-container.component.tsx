@@ -56,8 +56,6 @@ export const ForumContainerComponent: React.FC<ForumContainerComponentProps> = (
     const [answer, setAnswer] = useState<Answer[]>([]);
 
     const size = 10;
-    let retrievedQuestion: any;
-    let retrievedAnswer: any;
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
@@ -65,6 +63,7 @@ export const ForumContainerComponent: React.FC<ForumContainerComponentProps> = (
     };
 
     const load = async (page: number) => {
+        let retrievedQuestion: Question;
         let retrievedAnswerPageable: any;
         if (props.storeQuestion) {
             retrievedAnswerPageable = await fallbackRemote.getAnswersByQuestionId(props.storeQuestion.id, size, page);
@@ -78,19 +77,32 @@ export const ForumContainerComponent: React.FC<ForumContainerComponentProps> = (
         setQuestion([retrievedQuestion]);
     }
 
-
-    const reload = async () => {
-        const reQuestionId = +JSON.parse(JSON.stringify(localStorage.getItem('questionId')))
-        try {
-            retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(reQuestionId);
-            retrievedAnswer = await fallbackRemote.getAnswerByAnswerId(retrievedQuestion.acceptedId);
-        } catch {
-            return;
-        }
-        setAnswer([retrievedAnswer]);
-    }
-
     useEffect(() => {
+        const load = async (page: number) => {
+            let retrievedAnswerPageable: any;
+            let retrievedQuestion: any;
+            try {
+                retrievedAnswerPageable = await fallbackRemote.getAnswersByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))), size, page);
+                retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))));
+                } catch {
+                    return;
+                }
+            setTotalPages(retrievedAnswerPageable.totalPages);
+            setAnswers(retrievedAnswerPageable.content);
+            setQuestion([retrievedQuestion]);
+        }
+
+        const reload = async () => {
+            let retrievedAnswer: Answer;
+            const reQuestionId = +JSON.parse(JSON.stringify(localStorage.getItem('questionId')))
+            try {
+            const reQuestion = await fallbackRemote.getQuestionByQuestionId(reQuestionId);
+            retrievedAnswer = await fallbackRemote.getAnswerByAnswerId(reQuestion.acceptedId);
+            } catch {
+                return;
+            }
+            setAnswer([retrievedAnswer]);
+        }
         load(0);
         reload();
     }, [])
@@ -159,4 +171,3 @@ export default connect(mapStateToProps, mapDispatchToProps)(ForumContainerCompon
     // } else if (!props.storeQuestion && (answers.length === 0)) {
     //     load(0);
     // }
-

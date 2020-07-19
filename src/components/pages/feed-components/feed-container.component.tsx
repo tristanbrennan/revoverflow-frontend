@@ -54,7 +54,7 @@ export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (pr
     const history = useHistory();
     const [questions, setQuestions] = useState<Question[]>([])
     const [view, setView] = useState<'question' | 'answer' | 'confirm' | 'recent'>('recent');
-    const [value, setValue] = React.useState(1);
+    const [value, setValue] = React.useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [page, setPage] = useState(0);
 
@@ -130,14 +130,14 @@ export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (pr
                             variant="fullWidth"
                             onChange={handleChange}
                         >
-                            {admin === 'true' ? <Tab icon={<ConfirmationNumberOutlinedIcon fontSize="large" onClick={(e) => load("confirm", 0)} />}
-                                label="CONFIRM" className={classes.boxInternal} /> : ""}
                             <Tab icon={<DynamicFeedOutlinedIcon fontSize="large" />} label="RECENT" className={classes.boxInternal}
                                 onClick={(e) => load("recent", 0)} />
                             <Tab icon={<HelpOutlinedIcon fontSize="large" />} label="MY QUESTIONS" className={classes.boxInternal}
                                 onClick={(e) => load("question", 0)} />
                             <Tab icon={<QuestionAnswerIcon fontSize="large" />} label="MY ANSWERS" className={classes.boxInternal}
                                 onClick={(e) => load("answer", 0)} />
+                            {admin === 'true' ? <Tab icon={<ConfirmationNumberOutlinedIcon fontSize="large" onClick={(e) => load("confirm", 0)} />}
+                                label="CONFIRM" className={classes.boxInternal} /> : ""}
                         </Tabs>
                     </Box>
                     <div style={{ width: '100%' }}>

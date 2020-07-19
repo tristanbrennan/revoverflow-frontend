@@ -71,12 +71,12 @@ export const ForumAcceptedAnswerComponent: React.FC<ForumAcceptedAnswerComponent
         userId: 0
     })
 
-    const getCurrentQuestion = async () => {
-        const retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(props.answer.questionId);
-        setCurrentQuestion(retrievedQuestion);
-    }
-
+    
     useEffect(() => {
+        const getCurrentQuestion = async () => {
+            const retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))));
+            setCurrentQuestion(retrievedQuestion);
+        }
         getCurrentQuestion();
     }, [])
 

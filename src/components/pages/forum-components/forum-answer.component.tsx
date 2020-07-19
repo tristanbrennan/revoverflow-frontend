@@ -73,12 +73,11 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
         userId: 0
     })
 
-    const getCurrentQuestion = async () => {
-        const retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(props.answer.questionId);
-        setCurrentQuestion(retrievedQuestion);
-    }
-
     useEffect(() => {
+        const getCurrentQuestion = async () => {
+            const retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))));
+            setCurrentQuestion(retrievedQuestion);
+        }
         getCurrentQuestion();
     }, [])
 
@@ -134,6 +133,7 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
             return;
         }
         props.setSelected(true);
+        window.location.reload(false);
         setOpen(false);
     };
 
