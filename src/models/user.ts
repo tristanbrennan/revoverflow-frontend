@@ -3,7 +3,7 @@
  * @author Michel Charles <mcharl05@nyit.edu>
  */
 
-export interface user {
+export interface User {
     userID : number;
     RSSAccountId: number;
     points: number;

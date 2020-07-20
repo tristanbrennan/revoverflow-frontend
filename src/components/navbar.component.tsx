@@ -8,7 +8,7 @@
  * @author Yurrian Pierre-Boyer
  */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import {
   createStyles,
@@ -38,6 +38,11 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MailIcon from "@material-ui/icons/Mail";
 import { Link } from "react-router-dom";
+import * as userRemote from '../remotes/user.remote';
+import { User } from '../models/user';
+
+
+
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
@@ -178,7 +183,7 @@ export const NavbarComponent: React.FC = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem("jwt");
     console.log("logged out");
   };
   const menuId = "primary-search-account-menu";
@@ -238,6 +243,21 @@ export const NavbarComponent: React.FC = () => {
     </Menu>
 
   );
+
+    const [points, setPoints]= useState(0);
+    const gettingPoints = localStorage.getItem('points')
+    
+      useEffect(() =>{
+        displayPoints();
+    }, []);
+    
+    const displayPoints= () =>{
+    if(gettingPoints){
+       setPoints(0)
+     };
+  };
+
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -283,8 +303,10 @@ export const NavbarComponent: React.FC = () => {
               </Badge>
             </IconButton>
             <Typography className={classes.orange} variant="h4">
-              Points:
+              Points: {points}
             </Typography>
+
+            
           </Box>
         </Toolbar>
       </AppBar>
@@ -355,4 +377,4 @@ export const NavbarComponent: React.FC = () => {
       {renderMenu}
     </div>
   );
-};
+}
