@@ -245,7 +245,7 @@ export const NavbarComponent: React.FC = () => {
 
   useEffect(() => {
     displayPoints();
-  }, []);
+  });
 
   const displayPoints = () => {
     if (gettingPoints) {
@@ -258,7 +258,7 @@ export const NavbarComponent: React.FC = () => {
 
   useEffect(() =>{
     displayName();
-  }, []);
+  });
 
   const displayName = () => {
     if (gettingName){
