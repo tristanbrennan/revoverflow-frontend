@@ -35,7 +35,6 @@ let response: any;
 const setInformation = async()=>{
   setInputEmail('');
   setInputPassword('');
-  //const decodeValue= JSON.parse(window.atob(authToken.split('.')[1]))
   localStorage.setItem('jwt', response.data.jwt);
   localStorage.setItem('admin', response.data.admin);
   localStorage.setItem('email', response.data.email)
