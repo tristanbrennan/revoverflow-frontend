@@ -68,8 +68,8 @@ export const ForumQuestionComponent: React.FC<ForumQuestionComponentProps> = (pr
             return;
         } 
     }
-    
 
+    console.log(confirmed);
     return (
         <ThemeProvider theme={theme} >
             <Container >

@@ -47,6 +47,7 @@ const setInformation = async()=>{
   localStorage.setItem('userId', response.data.userID);
   console.log(response.data.admin);
   history.push('/feed')
+  window.location.reload(false);
 }
 
 const addLoginCredentials = async () => {

@@ -13,6 +13,9 @@ export interface IState {
 export interface QuestionState {
     collectedQuestions: Question[];
     storeQuestion: Question | undefined;
+    storeTab: number;
+    storePageCount: number;
+    storePage: number;
 }
 
 export interface AnswerState {

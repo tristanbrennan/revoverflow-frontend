@@ -155,6 +155,7 @@ export const NavbarComponent: React.FC = () => {
   const history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
+  const points = (+JSON.parse(JSON.stringify(localStorage.getItem('points'))));
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [
@@ -283,7 +284,7 @@ export const NavbarComponent: React.FC = () => {
               </Badge>
             </IconButton>
             <Typography className={classes.orange} variant="h4">
-              Points:
+              Points: {points}
             </Typography>
           </Box>
         </Toolbar>

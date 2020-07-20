@@ -4,26 +4,26 @@ Jordon Hill
 */
 
 import { QuestionState } from '.';
-import { QuestionActionPayload, questionActionTypes } from '../actions/question.actions';
+import { QuestionActionPayload, questionActionTypes, QuestionsActionPayload } from '../actions/question.actions';
 import { Action } from 'redux';
 
 
 const initialState: QuestionState = {
     collectedQuestions: [],
     storeQuestion: JSON.parse((localStorage.getItem('question')) || '{}'),
+    storeTab: 0,
+    storePageCount: 0,
+    storePage: 0,
 }
 
 export const questionReducer = (state: QuestionState = initialState,
-    action: QuestionActionPayload & Action) => {
+    action: QuestionActionPayload & QuestionsActionPayload & Action) => {
 
     switch (action.type) {
         case questionActionTypes.POST_QUESTION: {
             let questionArray = state.collectedQuestions;
-            if (!state.collectedQuestions.some(q =>
-                q.title === action.payload.question.title)) {
-                questionArray = [...questionArray, action.payload.question]
-                    .sort((a, b) => b.creationDate.getTime() - a.creationDate.getTime());
-            }
+            questionArray = [...questionArray, action.payload.question]
+                    .sort((a, b) => a.creationDate.getTime() - b.creationDate.getTime());
             return {
                 ...state,
                 collectedQuestions: questionArray
@@ -33,6 +33,15 @@ export const questionReducer = (state: QuestionState = initialState,
             return {
                 ...state,
                 storeQuestion: action.payload.question
+            }
+        }
+        case questionActionTypes.CLICK_TAB: {
+            return {
+                ...state,
+                collectedQuestions: action.payload.questions,
+                storeTab: action.payload.tab,
+                storePageCount: action.payload.pageCount,
+                storePage: action.payload.page
             }
         }
         default: {

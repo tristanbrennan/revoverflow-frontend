@@ -86,17 +86,13 @@ export const ForumAcceptedAnswerComponent: React.FC<ForumAcceptedAnswerComponent
             <ThemeProvider theme={theme}>
                 <Container>
                     <Box justifyContent="flex-start" display="flex" flexDirection="row" className={classes.boxInternal}>
-                        <Box>
-                            <Box>
-                                <Box justifyContent="flex-start" display="flex">
-                                    <FormControlLabel
-                                        control={<DoneIcon className={classes.checkSize} />} label=""
-                                        style={{ color: green[500] }} />
-                                    <Box textAlign="left">
-                                        <p>{props.answer.content}</p>
-                                        <footer>{props.answer.userId} <br />{props.answer.creationDate}</footer>
-                                    </Box>
-                                </Box>
+                        <Box justifyContent="flex-start" display="flex">
+                            <FormControlLabel
+                                control={<DoneIcon className={classes.checkSize} />} label=""
+                                style={{ color: green[500] }} />
+                            <Box textAlign="left">
+                                <p>{props.answer.content}</p>
+                                <footer>{props.answer.userId} <br />{props.answer.creationDate}</footer>
                             </Box>
                         </Box>
                     </Box>

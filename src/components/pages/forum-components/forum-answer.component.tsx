@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles, Box, FormControlLabel, Modal, Fade, Backdrop, Button, Container, createMuiTheme, ThemeProvider } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
 import { green } from '@material-ui/core/colors';
@@ -59,32 +59,17 @@ interface ForumAnswerComponentProps {
     selected: boolean;
     setSelected: (selected: boolean) => void;
     acceptAnswer: (answer: Answer) => void;
+    storeQuestion: any;
 }
 
 export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props) => {
     const classes = useStyles();
     const [color, setColor] = useState(false)
     const [open, setOpen] = React.useState(false);
-    const [currentQuestion, setCurrentQuestion] = useState<Question>({
-        id: 0,
-        acceptedId: 0,
-        title: "",
-        content: "",
-        creationDate: new Date(),
-        status: false,
-        userId: 0
-    })
-
-    useEffect(() => {
-        const getCurrentQuestion = async () => {
-            const retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))));
-            setCurrentQuestion(retrievedQuestion);
-        }
-        getCurrentQuestion();
-    }, [])
+    // const [currentQuestion, setCurrentQuestion] = useState<Question>(props.storeQuestion)
 
     const selectAnswer = async () => {
-        if (currentQuestion.acceptedId) {
+        if (props.storeQuestion.acceptedId) {
             return;
         } else {
             if (!props.selected) {
@@ -100,7 +85,7 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
     }
 
     const handleOpen = async () => {
-        if (currentQuestion.acceptedId) {
+        if (props.storeQuestion.acceptedId) {
             return;
         } else {
             setOpen(true);
@@ -136,7 +121,6 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
             return;
         }
         props.setSelected(true);
-        window.location.reload(false);
         setOpen(false);
     };
 
@@ -145,14 +129,14 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
         setOpen(false);
     };
 
-    if (!(currentQuestion.acceptedId !== props.answer.id)) {
+    if (!(props.storeQuestion.acceptedId !== props.answer.id)) {
         return <div />;
     } else {
         return (
             <ThemeProvider theme={theme}>
                 <Container>
                     <Box justifyContent="flex-start" display="flex" flexDirection="row" className={classes.boxInternal}>
-                        {(currentQuestion.acceptedId === null) ?
+                        {(props.storeQuestion.acceptedId === null) ?
                             <Box justifyContent="flex-start" display="flex">
                                 <Box justifyContent="flex-start" display="flex">
                                     {color === true ?
@@ -190,7 +174,6 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
                         aria-describedby="transition-modal-description"
                         className={classes.modal}
                         open={open}
-                        // onClose={handleClose}
                         closeAfterTransition
                         BackdropComponent={Backdrop}
                         BackdropProps={{
@@ -221,6 +204,7 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
 const mapStateToProps = (state: IState) => {
     return {
         // storeAnswers: state.answerState.collectedAnswers
+        storeQuestion: state.questionState.storeQuestion
     }
 }
 
@@ -229,3 +213,14 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ForumAnswerComponent);
+
+
+    
+        // const getCurrentQuestion = async () => {
+        //     const retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))));
+        //     setCurrentQuestion(retrievedQuestion);
+        // }
+        // if(currentQuestion.id  === 0) {
+        // getCurrentQuestion();
+        // }
+   
