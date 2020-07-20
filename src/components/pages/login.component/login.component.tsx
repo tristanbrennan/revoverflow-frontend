@@ -44,8 +44,8 @@ const setInformation = async()=>{
   localStorage.setItem('profilePicture', response.data.profilePicture);
   localStorage.setItem('rssaccountId', response.data.rssaccountId);
   localStorage.setItem('userId', response.data.userID);
-  console.log(response.data.admin);
   history.push('/feed')
+  window.location.reload(false);
 }
 
 const addLoginCredentials = async () => {
