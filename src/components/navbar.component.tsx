@@ -38,11 +38,8 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MailIcon from "@material-ui/icons/Mail";
 import { Link } from "react-router-dom";
-import * as userRemote from '../remotes/user.remote';
-import { User } from '../models/user';
-
-
-
+import * as userRemote from "../remotes/user.remote";
+import { User } from "../models/user";
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
@@ -241,22 +238,20 @@ export const NavbarComponent: React.FC = () => {
         <p>Profile</p>
       </MenuItem>
     </Menu>
-
   );
 
-    const [points, setPoints]= useState(0);
-    const gettingPoints = localStorage.getItem('points')
-    
-      useEffect(() =>{
-        displayPoints();
-    }, []);
-    
-    const displayPoints= () =>{
-    if(gettingPoints){
-       setPoints(0)
-     };
-  };
+  const [points, setPoints] = useState(0);
+  const gettingPoints = localStorage.getItem("points");
 
+  useEffect(() => {
+    displayPoints();
+  }, []);
+
+  const displayPoints = () => {
+    if (gettingPoints) {
+      setPoints(0);
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -305,8 +300,6 @@ export const NavbarComponent: React.FC = () => {
             <Typography className={classes.orange} variant="h4">
               Points: {points}
             </Typography>
-
-            
           </Box>
         </Toolbar>
       </AppBar>
@@ -354,7 +347,7 @@ export const NavbarComponent: React.FC = () => {
           {["Post A Question"].map((text, index) => (
             <ListItem
               onClick={() => {
-                history.push("/question");
+                history.push("/texteditor");
               }}
               style={{ color: "#F26925" }}
               button
@@ -377,4 +370,4 @@ export const NavbarComponent: React.FC = () => {
       {renderMenu}
     </div>
   );
-}
+};

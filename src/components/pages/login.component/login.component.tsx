@@ -35,17 +35,16 @@ let response: any;
 const setInformation = async()=>{
   setInputEmail('');
   setInputPassword('');
-  console.log(response)
-
   localStorage.setItem('jwt', response.data.jwt);
   localStorage.setItem('admin', response.data.admin);
-  localStorage.setItem('email', response.data.email);
+  localStorage.setItem('email', response.data.email)
   localStorage.setItem('firstName', response.data.firstName);
   localStorage.setItem('lastName', response.data.lastName);
   localStorage.setItem('points', response.data.points);
   localStorage.setItem('profilePicture', response.data.profilePicture);
   localStorage.setItem('rssaccountId', response.data.rssaccountId);
-  localStorage.setItem('userID', response.data.userID);
+  localStorage.setItem('userId', response.data.userID);
+  console.log(response.data.admin);
   history.push('/feed')
 }
 
