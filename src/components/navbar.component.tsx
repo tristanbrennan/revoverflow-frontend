@@ -38,8 +38,6 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MailIcon from "@material-ui/icons/Mail";
 import { Link } from "react-router-dom";
-import * as userRemote from "../remotes/user.remote";
-import { User } from "../models/user";
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
@@ -240,7 +238,7 @@ export const NavbarComponent: React.FC = () => {
     </Menu>
   );
 
-  const [points, setPoints] = useState(0);
+  const [points, setPoints] = useState<any>();
   const gettingPoints = localStorage.getItem("points");
 
   useEffect(() => {
@@ -249,9 +247,24 @@ export const NavbarComponent: React.FC = () => {
 
   const displayPoints = () => {
     if (gettingPoints) {
-      setPoints(0);
+      setPoints(localStorage.getItem("points"));
     }
   };
+
+  const[name, setName] = useState<any>();
+  const gettingName = localStorage.getItem("firstName");
+
+  useEffect(() =>{
+    displayName();
+  }, []);
+
+  const displayName = () => {
+    if (gettingName){
+      setName(localStorage.getItem("firstName"));
+    }
+  };
+
+
 
   return (
     <div className={classes.root}>
@@ -281,6 +294,10 @@ export const NavbarComponent: React.FC = () => {
               alt="pop"
             />
           </Box>
+
+          <Typography className={classes.orange} variant="h4">
+              Welcome {name}
+          </Typography>
 
           <Box className={classes.arrangementInternal}>
             <IconButton
