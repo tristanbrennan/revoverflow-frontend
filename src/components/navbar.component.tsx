@@ -38,7 +38,6 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MailIcon from "@material-ui/icons/Mail";
 import { Link } from "react-router-dom";
-import '../components/pages/login.component/login.component.css'
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
@@ -105,7 +104,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     orange: {
       color: "#F26925",
-      
     },
     arrangement: {
       display: "flex",
@@ -253,21 +251,6 @@ export const NavbarComponent: React.FC = () => {
     }
   };
 
-  const[name, setName] = useState<any>();
-  const gettingName = localStorage.getItem("firstName");
-
-  useEffect(() =>{
-    displayName();
-  });
-
-  const displayName = () => {
-    if (gettingName){
-      setName(localStorage.getItem("firstName"));
-    }
-  };
-
-
-
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -375,9 +358,6 @@ export const NavbarComponent: React.FC = () => {
               <ListItemText primary={text} />
             </ListItem>
           ))}
-          <Typography className={classes.orange} variant="h6" id="name-display">
-            {name}
-          </Typography>
         </List>
       </Drawer>
       {renderMobileMenu}
