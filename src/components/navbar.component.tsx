@@ -38,6 +38,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MailIcon from "@material-ui/icons/Mail";
 import { Link } from "react-router-dom";
+import '../components/pages/login.component/login.component.css'
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
@@ -104,6 +105,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     orange: {
       color: "#F26925",
+      
     },
     arrangement: {
       display: "flex",
@@ -295,13 +297,9 @@ export const NavbarComponent: React.FC = () => {
             />
           </Box>
 
-          <Typography className={classes.orange} variant="h4">
-              Welcome {name}
-          </Typography>
-
           <Box className={classes.arrangementInternal}>
             <IconButton
-              edge="end"
+              edge="start"
               aria-label="account of current user"
               // aria-controls={menuId}
               aria-haspopup="true"
@@ -309,11 +307,7 @@ export const NavbarComponent: React.FC = () => {
             >
               <AccountCircle className={classes.orange} />
             </IconButton>
-            <IconButton aria-label="show 17 new notifications">
-              <Badge>
-                <NotificationsIcon className={classes.orange} />
-              </Badge>
-            </IconButton>
+
             <Typography className={classes.orange} variant="h4">
               Points: {points}
             </Typography>
@@ -381,6 +375,9 @@ export const NavbarComponent: React.FC = () => {
               <ListItemText primary={text} />
             </ListItem>
           ))}
+          <Typography className={classes.orange} variant="h6" id="name-display">
+            {name}
+          </Typography>
         </List>
       </Drawer>
       {renderMobileMenu}
