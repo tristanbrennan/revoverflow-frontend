@@ -5,7 +5,8 @@ import { Question } from '../models/question';
 export const questionActionTypes = {
     POST_QUESTION: 'POST_QUESTION',
     CLICK_QUESTION: 'CLICK_QUESTION',
-    CLICK_TAB: 'CLICK_TAB'
+    CLICK_TAB: 'CLICK_TAB',
+    CLICK_CONFIRM: 'CLICK_CONFIRM',
 }
 
 export interface QuestionActionPayload {
@@ -20,6 +21,13 @@ export interface QuestionsActionPayload {
         tab: number,
         pageCount: number,
         page: number,
+    }
+}
+
+export interface QuestionConfirmActionPayload {
+    payload: {
+        question: Question,
+        confirm: boolean,
     }
 }
 
@@ -49,6 +57,16 @@ export const clickTab = (questions: Question[], tab: number, pageCount: number, 
             tab,
             pageCount,
             page,
+        },
+    });
+}
+
+export const clickConfirm = (question: Question, confirm: boolean) => (dispatch: Dispatch<QuestionConfirmActionPayload & Action>) => {
+    dispatch({
+        type: questionActionTypes.CLICK_CONFIRM,
+        payload: {
+            question,
+            confirm
         },
     });
 }

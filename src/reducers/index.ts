@@ -16,11 +16,13 @@ export interface QuestionState {
     storeTab: number;
     storePageCount: number;
     storePage: number;
+    confirm: boolean;
 }
 
 export interface AnswerState {
     collectedAnswers: Answer[];
     storeAnswer: Answer | undefined;
+    accepted: boolean;
 }
 
 export const state = combineReducers ({

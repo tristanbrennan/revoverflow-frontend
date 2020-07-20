@@ -8,6 +8,7 @@ import { Question } from '../../../models/question';
 import { IState } from '../../../reducers';
 import { connect } from 'react-redux';
 import { acceptAnswer } from '../../../actions/answer.actions';
+import { clickQuestion } from '../../../actions/question.actions';
 
 
 const useStyles = makeStyles({
@@ -58,15 +59,16 @@ interface ForumAnswerComponentProps {
     answer: Answer;
     selected: boolean;
     setSelected: (selected: boolean) => void;
-    acceptAnswer: (answer: Answer) => void;
+    acceptAnswer: (answer: Answer, accepted: boolean) => void;
     storeQuestion: any;
+    clickQuestion: (question: Question) => void;
+    accepted: boolean;
 }
 
 export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props) => {
     const classes = useStyles();
     const [color, setColor] = useState(false)
     const [open, setOpen] = React.useState(false);
-    // const [currentQuestion, setCurrentQuestion] = useState<Question>(props.storeQuestion)
 
     const selectAnswer = async () => {
         if (props.storeQuestion.acceptedId) {
@@ -112,16 +114,19 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
         };
 
         try {
-            await fallbackRemote.updateQuestionAcceptedAnswerId(payload);
-            props.acceptAnswer(props.answer);
+            const retrievedQuestion = await fallbackRemote.updateQuestionAcceptedAnswerId(payload);
+            localStorage.setItem("question", JSON.stringify(retrievedQuestion.data));
+            props.clickQuestion(retrievedQuestion.data);
             localStorage.setItem('answerId', JSON.stringify(props.answer.id));
             localStorage.setItem('selectedAnswer', JSON.stringify(props.answer));
         } catch {
             alert("You encountered an error")
             return;
         }
+        props.acceptAnswer(props.answer, true);
         props.setSelected(true);
         setOpen(false);
+        window.location.reload(false);
     };
 
     const handleCloseCancel = () => {
@@ -129,7 +134,7 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
         setOpen(false);
     };
 
-    if (!(props.storeQuestion.acceptedId !== props.answer.id)) {
+    if ((props.storeQuestion.acceptedId === props.answer.id)) {
         return <div />;
     } else {
         return (
@@ -203,24 +208,14 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
 
 const mapStateToProps = (state: IState) => {
     return {
-        // storeAnswers: state.answerState.collectedAnswers
-        storeQuestion: state.questionState.storeQuestion
+        storeQuestion: state.questionState.storeQuestion,
+        accepted: state.answerState.accepted
     }
 }
 
 const mapDispatchToProps = {
     acceptAnswer,
+    clickQuestion,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ForumAnswerComponent);
-
-
-    
-        // const getCurrentQuestion = async () => {
-        //     const retrievedQuestion = await fallbackRemote.getQuestionByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))));
-        //     setCurrentQuestion(retrievedQuestion);
-        // }
-        // if(currentQuestion.id  === 0) {
-        // getCurrentQuestion();
-        // }
-   

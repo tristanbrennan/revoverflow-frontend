@@ -74,7 +74,6 @@ export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (pr
         load(view, value - 1);
     };
 
-    // console.log(props.storePage + "storepage");
     const load = async (view: string, page: number) => {
         let retrievedPageable: any;
         let tab: any;
@@ -95,8 +94,6 @@ export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (pr
             tab = 3;
             setView(view)
         }
-        // console.log(retrievedPageable.number + "retrieve page");
-        console.log(retrievedPageable.totalPages);
         props.clickTab(retrievedPageable.content, tab, retrievedPageable.totalPages, retrievedPageable.number);
     }
 
