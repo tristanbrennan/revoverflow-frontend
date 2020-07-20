@@ -155,7 +155,6 @@ export const NavbarComponent: React.FC = () => {
   const history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
-  // const points = (+JSON.parse(JSON.stringify(localStorage.getItem('points'))));
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [
