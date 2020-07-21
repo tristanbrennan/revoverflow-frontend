@@ -171,13 +171,12 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
                                     />
                                 </Box>
                                 <Box textAlign="left">
-                                <div><Editor editorState={questionContent} readOnly={true} onChange={onChange} /></div>
+                                    <div><Editor editorState={questionContent} readOnly={true} onChange={onChange} /></div>
                                     <footer>{props.answer.userId} <br />{props.answer.creationDate}</footer>
                                 </Box>
                             </Box>
                         }
                     </Box>
-
                     <Modal
                         aria-labelledby="transition-modal-title"
                         aria-describedby="transition-modal-description"

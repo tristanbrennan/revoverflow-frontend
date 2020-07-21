@@ -33,7 +33,6 @@ const useStyles = makeStyles({
     modalInternal: {
         display: "flex",
         justifyContent: "space-evenly"
-
     },
     buttonInternal: {
         color: '#ffffff',
@@ -62,7 +61,7 @@ interface ForumAcceptedAnswerComponentProps {
 export const ForumAcceptedAnswerComponent: React.FC<ForumAcceptedAnswerComponentProps> = (props) => {
     const classes = useStyles();
     const questionContent = EditorState.createWithContent(convertFromRaw(JSON.parse(props.answer.content)));
-    const onChange = () => { }
+    const onChange = () => {};
 
     if (!(props.answer.id === props.storeQuestion.acceptedId)) {
         return <div></div>;
@@ -95,7 +94,6 @@ const mapStateToProps = (state: IState) => {
 }
 
 const mapDispatchToProps = {
-
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ForumAcceptedAnswerComponent);

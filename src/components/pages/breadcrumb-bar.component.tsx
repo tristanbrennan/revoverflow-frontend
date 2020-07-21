@@ -15,9 +15,14 @@ const useStyles = makeStyles((theme: Theme) =>
             width: 20,
             height: 20,
         },
-        toolbar: {
+        BCtoolbar: {
             backgroundColor: "#474c55",
-            paddingLeft: 80
+            paddingLeft: 80,
+            marginTop: 60,
+            marginLeft: 20,
+            display: "flex",
+            flexGrow: 1
+            
         }
     }),
 );
@@ -42,7 +47,7 @@ export const BreadcrumbBarComponent: React.FC = (props) => {
     }
 
     return (
-        <Toolbar className={classes.toolbar}>
+        <Toolbar className={classes.BCtoolbar}>
             <Link color="inherit" href="/" onClick={handleClick2} className={classes.link}>
                 <HomeIcon className={classes.icon} />
             </Link>

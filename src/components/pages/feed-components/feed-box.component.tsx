@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, Box, Card } from '@material-ui/core';
+import { makeStyles, Box, Card, Typography } from '@material-ui/core';
 import { useHistory } from 'react-router';
 import { Question } from '../../../models/question';
 import * as fallbackRemote from '../../../remotes/fallback.remote';
@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 import { clickQuestion } from '../../../actions/question.actions';
 import { convertFromRaw, EditorState, Editor } from 'draft-js';
 
-const drawerWidth = 100;
 
+const drawerWidth = 100;
 const useStyles = makeStyles({
     boxInternal: {
         marginBottom: 5,
@@ -18,7 +18,6 @@ const useStyles = makeStyles({
         borderColor: "#f26925",
         maxWidth: 1000,
         width: `calc(100% - ${drawerWidth}px)`
-
     },
     divInternal: {
         paddingTop: 20
@@ -31,6 +30,7 @@ interface FeedBoxComponentProps {
     questionContent: string;
     storeQuestion: any;
     clickQuestion: (question: Question) => void;
+    view: string;
 }
 
 export const FeedBoxComponent: React.FC<FeedBoxComponentProps> = (props) => {
@@ -57,7 +57,7 @@ export const FeedBoxComponent: React.FC<FeedBoxComponentProps> = (props) => {
     }
 
     const questionContent = EditorState.createWithContent(convertFromRaw(JSON.parse(props.question.content)));
-    const onChange = () => { }
+    const onChange = () => {};
 
     //!First box here contains answers not questions, so does its handler deal with answer not questions
     return (
@@ -72,13 +72,22 @@ export const FeedBoxComponent: React.FC<FeedBoxComponentProps> = (props) => {
                         </Box>
                     </Box>
                     :
-                    <Box display="flex" justifyContent="center" onClick={() => handleRedirectQ()} >
-                        <Box paddingLeft={2} paddingRight={2}>
-                            <h2>{props.question.title}</h2>
-                            <div><Editor editorState={questionContent} readOnly={true} onChange={onChange} /></div>
-                            <h3>{props.question.userId}</h3>
-                            <p>{props.question.creationDate}</p>
-                        </Box>
+                    <Box>
+                        {!props.question.acceptedId && props.view === "confirm" ?
+                            <Box display="flex" justifyContent="center" onClick={() => handleRedirectQ()} >
+                                <Box paddingLeft={2} paddingRight={2}>
+                                    <Typography variant="h5">Waiting for users to accept answers ...</Typography>
+                                </Box>
+                            </Box>
+                            :
+                            <Box display="flex" justifyContent="center" onClick={() => handleRedirectQ()} >
+                                <Box paddingLeft={2} paddingRight={2}>
+                                    <h2>{props.question.title}</h2>
+                                    <div><Editor editorState={questionContent} readOnly={true} onChange={onChange} /></div>
+                                    <h3>{props.question.userId}</h3>
+                                    <p>{props.question.creationDate}</p>
+                                </Box>
+                            </Box>}
                     </Box>}
             </Card>
         </Box>

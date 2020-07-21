@@ -18,7 +18,6 @@ import { clickTab } from '../../../actions/question.actions';
 import LiveHelpIcon from '@material-ui/icons/LiveHelp';
 
 
-// const drawerWidth = 100;
 const theme = createMuiTheme({
     palette: {
         primary: {
@@ -32,7 +31,6 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles({
     boxExternal: {
-        // width: `calc(100% - ${drawerWidth}px)`,
         minWidth: 500
     },
     boxInternal: {
@@ -43,7 +41,7 @@ const useStyles = makeStyles({
     },
     breadcrumbBar: {
         marginTop: 60,
-        marginLeft: 20
+        marginLeft: 20,
     }
 });
 
@@ -107,17 +105,17 @@ export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (pr
     const renderFeedBoxComponents = () => {
         return props.storeQuestions.map(question => {
             return (
-                <FeedBoxComponent key={question.id} question={question} questionContent={question.content} />
+                <FeedBoxComponent key={question.id} question={question} questionContent={question.content} view={view} />
             )
         })
     }
 
     const handleRedirect = () => {
-        history.push('/postquestion');
+        history.push('/question');
     }
 
     return (
-        <div className={classes.breadcrumbBar}>
+        <div>
             <BreadcrumbBarComponent />
             <Container className={classes.containerInternal}>
                 <Box justifyContent="flex-end" display="flex" >

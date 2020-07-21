@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles, Box, Container, Button, Card, createMuiTheme, ThemeProvider } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { IState } from '../../../reducers';
@@ -6,8 +6,8 @@ import { Question } from '../../../models/question';
 import * as fallbackRemote from '../../../remotes/fallback.remote';
 import { clickQuestion } from '../../../actions/question.actions';
 import { clickConfirm } from '../../../actions/question.actions';
-import { useHistory } from 'react-router';
 import { EditorState, convertFromRaw, Editor } from 'draft-js';
+import { AnswerRichTextEditorComponent } from './rich-text-editor-component/answer-draftjs';
 
 
 const useStyles = makeStyles({
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
         borderLeftStyle: "solid",
         borderColor: "#f26925",
         padding: 10,
-        minWidth: 480
+        minWidth: 450
     },
     buttonInternal: {
         maxWidth: 110,
@@ -47,8 +47,8 @@ interface ForumQuestionComponentProps {
 
 export const ForumQuestionComponent: React.FC<ForumQuestionComponentProps> = (props) => {
     const classes = useStyles();
-    const history = useHistory();
     const admin = (localStorage.getItem("admin"));
+    const [answerFields, setAnswerFields] = useState(false);
 
     const confirmAnswer = async () => {
         let questionInfo: Question;
@@ -81,7 +81,7 @@ export const ForumQuestionComponent: React.FC<ForumQuestionComponentProps> = (pr
     }
 
     const handleRedirect = () => {
-        history.push('/postanswer');
+        setAnswerFields(true);
     }
 
     const questionContent = EditorState.createWithContent(convertFromRaw(JSON.parse(props.storeQuestion.content)));
@@ -114,6 +114,11 @@ export const ForumQuestionComponent: React.FC<ForumQuestionComponentProps> = (pr
                         </Box>
                     </Box>
                 </Card>
+                {answerFields ?
+                    <AnswerRichTextEditorComponent setAnswerFields={setAnswerFields} answerFields={answerFields} />
+                    :
+                    ""
+                }
             </Container>
         </ThemeProvider>
     )
