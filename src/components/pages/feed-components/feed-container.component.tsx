@@ -33,11 +33,10 @@ const theme = createMuiTheme({
 const useStyles = makeStyles({
     boxExternal: {
         // width: `calc(100% - ${drawerWidth}px)`,
-        // minWidth: 437
+        minWidth: 500
     },
     boxInternal: {
         color: "#f26925",
-
     },
     containerInternal: {
         paddingTop: 10,
@@ -134,7 +133,7 @@ export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (pr
                             value={value}
                             indicatorColor="secondary"
                             textColor="primary"
-                            variant="scrollable"
+                            variant="fullWidth"
                             scrollButtons="auto"
                             onChange={handleChange}
                         >
