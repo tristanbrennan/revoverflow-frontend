@@ -7,6 +7,10 @@ import { IState } from '../../../reducers';
 import { connect } from 'react-redux';
 import { EditorState, convertFromRaw, Editor } from 'draft-js';
 
+/**
+ * @file Displays the question accepted answer
+ * @author Keith Salzman 
+ */
 
 const useStyles = makeStyles({
     modal: {

@@ -3,12 +3,16 @@ import { makeStyles, Box, Container, Button, Card, createMuiTheme, ThemeProvider
 import { connect } from 'react-redux';
 import { IState } from '../../../reducers';
 import { Question } from '../../../models/question';
-import * as fallbackRemote from '../../../remotes/fallback.remote';
+import * as questionRemote from '../../../remotes/question.remote';
 import { clickQuestion } from '../../../actions/question.actions';
 import { clickConfirm } from '../../../actions/question.actions';
 import { EditorState, convertFromRaw, Editor } from 'draft-js';
 import { AnswerRichTextEditorComponent } from './rich-text-editor-component/answer-draftjs';
 
+/**
+ * @file Displays question of interest within forum
+ * @author Keith Salzman 
+ */
 
 const useStyles = makeStyles({
     boxInternal: {
@@ -53,7 +57,7 @@ export const ForumQuestionComponent: React.FC<ForumQuestionComponentProps> = (pr
     const confirmAnswer = async () => {
         let questionInfo: Question;
         try {
-            questionInfo = await fallbackRemote.getQuestionByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))))
+            questionInfo = await questionRemote.getQuestionByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))))
         } catch {
             alert("You encountered an error")
             return;
@@ -70,7 +74,7 @@ export const ForumQuestionComponent: React.FC<ForumQuestionComponentProps> = (pr
         };
 
         try {
-            const retrievedQuestion = await fallbackRemote.updateQuestionStatus(payload);
+            const retrievedQuestion = await questionRemote.updateQuestionStatus(payload);
             localStorage.setItem("question", JSON.stringify(retrievedQuestion.data));
             props.clickConfirm(retrievedQuestion.data, true);
             window.location.reload(false);

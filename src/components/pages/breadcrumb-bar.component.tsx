@@ -4,6 +4,11 @@ import HomeIcon from '@material-ui/icons/Home';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { useHistory } from 'react-router';
 
+/**
+ * @file places breadcrume bar under the navbar with clickable trail
+ * @author Keith Salzman
+ */
+
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         link: {

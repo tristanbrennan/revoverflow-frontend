@@ -9,7 +9,8 @@ import ConfirmationNumberOutlinedIcon from '@material-ui/icons/ConfirmationNumbe
 import Pagination from '@material-ui/lab/Pagination';
 import { BreadcrumbBarComponent } from '../breadcrumb-bar.component';
 import { useHistory } from 'react-router';
-import * as fallbackRemote from '../../../remotes/fallback.remote';
+import * as answerRemote from '../../../remotes/answer.remote';
+import * as questionRemote from '../../../remotes/question.remote';
 import { Question } from '../../../models/question';
 import { IState } from '../../../reducers';
 import { connect } from 'react-redux';
@@ -17,6 +18,10 @@ import { clickQuestion } from '../../../actions/question.actions';
 import { clickTab } from '../../../actions/question.actions';
 import LiveHelpIcon from '@material-ui/icons/LiveHelp';
 
+/**
+ * @file Contains and manages the questions and answer boxes populated into the feed
+ * @author Keith Salzman 
+ */
 
 const theme = createMuiTheme({
     palette: {
@@ -76,22 +81,22 @@ export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (pr
         let retrievedPageable: any;
         let tab: any;
         if (view === 'recent') {
-            retrievedPageable = await fallbackRemote.getAllQuestions(size, page);
+            retrievedPageable = await questionRemote.getAllQuestions(size, page);
             tab = 0;
             setView(view);
             if (retrievedPageable.numberOfElements === 0) {
                 return;
             }
         } else if (view === 'question') {
-            retrievedPageable = await fallbackRemote.getQuestionsByUserId(userId, size, page);
+            retrievedPageable = await questionRemote.getQuestionsByUserId(userId, size, page);
             tab = 1;
             setView(view)
         } else if (view === 'answer') {
-            retrievedPageable = await fallbackRemote.getAnswersByUserId(userId, size, page);
+            retrievedPageable = await answerRemote.getAnswersByUserId(userId, size, page);
             tab = 2;
             setView(view)
         } else if (view === 'confirm') {
-            retrievedPageable = await fallbackRemote.getUnconfirmedQuestions(size, page);
+            retrievedPageable = await questionRemote.getUnconfirmedQuestions(size, page);
             tab = 3;
             setView(view)
         }
