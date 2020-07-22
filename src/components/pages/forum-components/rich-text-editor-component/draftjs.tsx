@@ -219,7 +219,7 @@ export const RichTextEditorComponent: React.FC = () => {
                             Ask a Question:
                     </Typography>
                     </Box>
-                    <Box display="flex" flexDirection="column">
+                    <Box display="flex" flexDirection="column" paddingBottom={3}>
                         <Box display="flex">
                             <Typography variant="h5" >
                                 Title:

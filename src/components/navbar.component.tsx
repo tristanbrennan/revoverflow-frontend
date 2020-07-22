@@ -35,6 +35,8 @@ import LiveHelpIcon from "@material-ui/icons/LiveHelp";
 import { useHistory } from "react-router";
 import { Menu, MenuItem, Box } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import * as loginRemote from '../remotes/login.remote'
+
 
 
 const drawerWidth = 240;
@@ -222,8 +224,15 @@ export const NavbarComponent: React.FC = () => {
     displayPoints();
   });
 
-  const displayPoints = () => {
+  const displayPoints = async () => {
+
     if (gettingPoints) {
+      try {
+      const response = await loginRemote.getUserById(+JSON.parse(JSON.stringify(localStorage.getItem('userId'))));
+      localStorage.setItem('points', JSON.stringify(response.data.points));
+      } catch {
+        alert('Couldnt retrieve points')
+      }
       setPoints(localStorage.getItem("points"));
     }
   };
