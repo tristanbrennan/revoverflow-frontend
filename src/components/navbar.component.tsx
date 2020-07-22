@@ -102,6 +102,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     orange: {
       color: "#F26925",
+      fontSize: 40,
+    },
+    pointsDisplay: {
+      color: "#F26925",
+      fontSize: 40,
+      paddingTop: 7
+    },
+    imageDoor: {
+      paddingBottom: 10
     },
     arrangement: {
       display: "flex",
@@ -240,12 +249,14 @@ export const NavbarComponent: React.FC = () => {
             >
               <MenuIcon fontSize="large" />
             </IconButton>
-            <img
-              src={require("../logo/image.png")}
-              height={40}
-              width={100}
-              alt="pop"
-            />
+            <Box className={classes.imageDoor}>
+              <img 
+                src={require("../logo/image.png")}
+                height={40}
+                width={100}
+                alt="pop"
+              />
+            </Box>
           </Box>
 
           <Box className={classes.arrangementInternal}>
@@ -259,7 +270,7 @@ export const NavbarComponent: React.FC = () => {
               <AccountCircle className={classes.orange} />
             </IconButton>
 
-            <Typography className={classes.orange} variant="h4">
+            <Typography className={classes.pointsDisplay} variant="h4" >
               Points: {points}
             </Typography>
           </Box>

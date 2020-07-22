@@ -86,11 +86,13 @@ export const AnswerRichTextEditorComponent: React.FC<AnswerRichTextEditorCompone
 
     const saveAnswer = async () => {
         const contentState = editorState.getCurrentContent();
+        // console.log(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))));
+        // console.log(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))));
         const payload: any = {
             content: JSON.stringify(convertToRaw(contentState)),
             creationDate: new Date(),
             questionId: +JSON.parse(JSON.stringify(localStorage.getItem('questionId'))),
-            userID: +JSON.parse(JSON.stringify(localStorage.getItem('userId')))
+            userId: +JSON.parse(JSON.stringify(localStorage.getItem('userId')))
         }
         await questionRemote.postAnswer(payload);
         window.location.reload(false);

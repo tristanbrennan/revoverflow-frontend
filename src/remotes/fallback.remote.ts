@@ -1,6 +1,5 @@
 import { internalAxios } from './internal.axios'
 import { Question } from '../models/question';
-import { user } from '../models/user';
 import { Answer } from '../models/answer';
 
 
@@ -25,32 +24,28 @@ export const getUnconfirmedQuestions = async (size: number, page: number) => {
 }
 
 export const getQuestionByQuestionId = async (id: number) => {
-    const response = await internalAxios.get<Question>(`/questions/questionid/${id}`);
+    const response = await internalAxios.get<Question>(`/questions/id/${id}`);
     return response.data;
 }
 
+//! This route not available now 
 export const getAnswerByAnswerId = async (id: number) => {
-    const response = await internalAxios.get<Answer>(`/answers/answerid/${id}`);
+    const response = await internalAxios.get<Answer>(`/answers/id/${id}`);
     return response.data;
 }
 
+//! This route not available now 
 export const getAnswersByQuestionId = async (id: number, size: number, page: number) => {
-    const response = await internalAxios.get<Question[]>(`/answers/questionid/${id}?size=${size}&page=${page}`);
+    const response = await internalAxios.get<Question[]>(`/answers/${id}?size=${size}&page=${page}`);
     return response.data;
 }
 
-export const updateQuestionAcceptedAnswerId = async (questionAcceptedAnswerId: any) => {
+export const updateQuestionAcceptedAnswerId = async (questionAcceptedAnswerId: Question) => {
     const response = await internalAxios.put<Question>(`/questions`, questionAcceptedAnswerId);
     return response;
 }
 
 export const updateQuestionStatus = async (questionStatus: any) => {
-    const response = await internalAxios.put<Question>(`/questions`, questionStatus);
+    const response = await internalAxios.put<Question>(`/questions/status`, questionStatus);
     return response;
 }
-
-export const updateUserPoints = async (userPoints: any) => {
-    const response = await internalAxios.put<user>(`/questions`, userPoints);
-    return response;
-}
-

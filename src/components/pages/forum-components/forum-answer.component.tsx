@@ -103,6 +103,12 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
             alert("You encountered an error")
             return;
         }
+
+        console.log(questionInfo.id);
+        console.log(props.answer.id);
+        console.log(questionInfo.title);
+        console.log(questionInfo.content);
+        console.log(+JSON.parse(JSON.stringify(localStorage.getItem('userId'))));
         const payload = {
             id: questionInfo.id,
             acceptedId: props.answer.id,
