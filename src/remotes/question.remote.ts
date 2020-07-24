@@ -2,6 +2,7 @@
 @author
 Jordon Hill
 */
+
 import { internalAxios } from './internal.axios'
 import { Question} from '../models/question';
 import { Answer } from '../models/answer';
@@ -20,7 +21,7 @@ export const postAnswer = async (answer: Answer) => {
 }
 
 export const getAllQuestions = async (size: number, page: number) => {
-    const response = await internalAxios.get<any>(`/questions?size=${size}&page=${page}`);
+    const response = await internalAxios.get<any>(`/questions?&size=${size}&page=${page}`);
     return response.data;
 }
 

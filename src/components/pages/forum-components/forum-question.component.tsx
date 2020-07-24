@@ -41,7 +41,7 @@ const theme = createMuiTheme({
     },
 });
 
-interface ForumQuestionComponentProps {
+export interface ForumQuestionComponentProps {
     storeQuestion: any;
     storeAnswer: any;
     storeConfirm: any;

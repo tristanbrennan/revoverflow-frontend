@@ -1,3 +1,10 @@
+/**
+ * @file 
+ * @author D. Jared Chase 
+ * @author Milton Reyes
+ * @author Jerry Pujals
+ */
+
 import React from 'react';
 import { useState } from 'react';
 import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
@@ -40,7 +47,7 @@ const useStyles = makeStyles({
     titleTool: {
         borderStyle: "solid",
         borderColor: "#f26925",
-        height: "7vh",
+        height: "6vh",
         overflowY: "auto",
     },
     editorTool: {
@@ -60,7 +67,7 @@ const useStyles = makeStyles({
         marginLeft: 20
     },
     font: {
-        fontSize: 30,
+        fontSize: 25,
         paddingLeft: 10
     }
 });
@@ -274,7 +281,7 @@ export const RichTextEditorComponent: React.FC = () => {
                                 onChange={onChange}
                             />
                         </Box>
-                        <Box justifyContent="flex-end" display="flex" padding={2}>
+                        <Box justifyContent="flex-end" display="flex" padding={2} paddingBottom={20}>
                             <Button onClick={saveQuestion} variant='contained' color='secondary' size='large' >Submit</Button>
                         </Box>
                     </Box>

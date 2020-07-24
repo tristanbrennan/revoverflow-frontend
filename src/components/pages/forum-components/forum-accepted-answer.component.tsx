@@ -55,7 +55,7 @@ const theme = createMuiTheme({
     },
 });
 
-interface ForumAcceptedAnswerComponentProps {
+export interface ForumAcceptedAnswerComponentProps {
     answer: Answer;
     storeAnswer: any;
     selected: boolean;

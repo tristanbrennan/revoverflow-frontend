@@ -1,3 +1,8 @@
+/**
+ * @file Contains and manages the questions and answer boxes populated into the feed
+ * @author Keith Salzman 
+ */
+
 import React, { useState } from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -14,14 +19,8 @@ import * as questionRemote from '../../../remotes/question.remote';
 import { Question } from '../../../models/question';
 import { IState } from '../../../reducers';
 import { connect } from 'react-redux';
-import { clickQuestion } from '../../../actions/question.actions';
 import { clickTab } from '../../../actions/question.actions';
 import LiveHelpIcon from '@material-ui/icons/LiveHelp';
-
-/**
- * @file Contains and manages the questions and answer boxes populated into the feed
- * @author Keith Salzman 
- */
 
 const theme = createMuiTheme({
     palette: {
@@ -52,8 +51,6 @@ const useStyles = makeStyles({
 
 export interface FeedContainerComponentProps {
     storeQuestions: Question[]
-    storeQuestion: any;
-    clickQuestion: (question: Question) => void;
     clickTab: (questions: Question[], tab: number, pageCount: number, page: number) => void;
     storeTab: number;
     storePageCount: number;
@@ -68,6 +65,7 @@ export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (pr
     const userId = (+JSON.parse(JSON.stringify(localStorage.getItem('userId'))));
     const admin = (localStorage.getItem("admin"));
     const size = 10;
+    let filteredQuestions: Question[] = [];
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -77,6 +75,11 @@ export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (pr
         load(view, value - 1);
     };
 
+    /**
+     * Populates the feed with answers or questions according to the particular view and page input. 
+     * @param view string variable that dictates what is displayed in the rendered feed box components
+     * @param page number variable that describes which page to display form the paginated information recieved from the server
+     */
     const load = async (view: string, page: number) => {
         let retrievedPageable: any;
         let tab: any;
@@ -100,6 +103,7 @@ export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (pr
             tab = 3;
             setView(view)
         }
+
         props.clickTab(retrievedPageable.content, tab, retrievedPageable.totalPages, retrievedPageable.number);
     }
 
@@ -107,12 +111,24 @@ export const FeedContainerComponent: React.FC<FeedContainerComponentProps> = (pr
         load("recent", 0);
     }
 
+    /**
+     * Maps the questions or answers into feed boxes to be displayed within the feed container.
+     */
     const renderFeedBoxComponents = () => {
-        return props.storeQuestions.map(question => {
-            return (
-                <FeedBoxComponent key={question.id} question={question} questionContent={question.content} view={view} />
-            )
-        })
+        if (view === 'confirm') {
+            filteredQuestions = props.storeQuestions.filter(question => question.acceptedId !== null);
+            return filteredQuestions.map(question => {
+                return (
+                    <FeedBoxComponent key={question.id} question={question} questionContent={question.content} view={view} />
+                )
+            })
+        } else {
+            return props.storeQuestions.map(question => {
+                return (
+                    <FeedBoxComponent key={question.id} question={question} questionContent={question.content} view={view} />
+                )
+            })
+        }
     }
 
     const handleRedirect = () => {
@@ -175,7 +191,6 @@ const mapStateToProps = (state: IState) => {
 }
 
 const mapDispatchToProps = {
-    clickQuestion,
     clickTab
 };
 

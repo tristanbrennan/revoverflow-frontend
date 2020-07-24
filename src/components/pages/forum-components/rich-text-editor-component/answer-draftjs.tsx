@@ -1,3 +1,10 @@
+/**
+ * @file 
+ * @author D. Jared Chase 
+ * @author Milton Reyes
+ * @author Jerry Pujals
+ */
+
 import React from 'react';
 import { useState } from 'react';
 import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
@@ -65,7 +72,7 @@ const styleMap = {
     }
 };
 
-interface AnswerRichTextEditorComponentProps {
+export interface AnswerRichTextEditorComponentProps {
     answerFields: boolean;
     setAnswerFields: (answerFields: boolean) => void;
 }
@@ -86,8 +93,6 @@ export const AnswerRichTextEditorComponent: React.FC<AnswerRichTextEditorCompone
 
     const saveAnswer = async () => {
         const contentState = editorState.getCurrentContent();
-        // console.log(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))));
-        // console.log(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))));
         const payload: any = {
             content: JSON.stringify(convertToRaw(contentState)),
             creationDate: new Date(),
@@ -184,7 +189,6 @@ export const AnswerRichTextEditorComponent: React.FC<AnswerRichTextEditorCompone
                 newEditorState.getSelection(),
                 entityKey
             ));
-            console.log(url);
 
         } else {
             alert('No text selected')

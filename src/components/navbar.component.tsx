@@ -108,8 +108,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     pointsDisplay: {
       color: "#F26925",
-      fontSize: 40,
-      paddingTop: 7
+      fontSize: 30,
+      paddingTop: 11
     },
     imageDoor: {
       paddingBottom: 10

@@ -1,3 +1,8 @@
+/**
+ * @file Contains and manages questions and answer mapped into boxes within the feed container
+ * @author Keith Salzman 
+ */
+
 import React from 'react';
 import { makeStyles, Box, Card } from '@material-ui/core';
 import { useHistory } from 'react-router';
@@ -9,10 +14,6 @@ import { connect } from 'react-redux';
 import { clickQuestion } from '../../../actions/question.actions';
 import { convertFromRaw, EditorState, Editor } from 'draft-js';
 
-/**
- * @file Contains and manages questions and answer mapped into boxes within the feed container
- * @author Keith Salzman 
- */
 
 const drawerWidth = 100;
 const useStyles = makeStyles({
@@ -29,11 +30,9 @@ const useStyles = makeStyles({
     }
 });
 
-interface FeedBoxComponentProps {
-    storeQuestions: Question[]
+export interface FeedBoxComponentProps {
     question: any;
     questionContent: string;
-    storeQuestion: any;
     clickQuestion: (question: Question) => void;
     view: string;
 }
@@ -42,6 +41,9 @@ export const FeedBoxComponent: React.FC<FeedBoxComponentProps> = (props) => {
     const classes = useStyles();
     const history = useHistory();
 
+    /**
+     * retrieves answers, persists question in the Redux store and questionId, quesiton and answers in local storage
+     */
     const handleRedirectQ = async () => {
         const retrievedAnswers = await answerRemote.getAnswersByQuestionId(props.question.id, 10, 0);
         props.clickQuestion(props.question);
@@ -50,6 +52,10 @@ export const FeedBoxComponent: React.FC<FeedBoxComponentProps> = (props) => {
         localStorage.setItem("answers", JSON.stringify(retrievedAnswers));
         history.push('/forum');
     }
+
+    /**
+     * retrieves Question and Answer. Persists question in the Redux store and questionId, quesiton and answers in local storage
+     */
 
     const handleRedirectA = async () => {
         const retrievedQuestion = await questionRemote.getQuestionByQuestionId(props.question.questionId);
@@ -65,42 +71,35 @@ export const FeedBoxComponent: React.FC<FeedBoxComponentProps> = (props) => {
     const onChange = () => { };
 
     //!First box here contains answers not questions, so does its handler deal with answer not questions
-    if (!props.question.acceptedId && props.view === "confirm") {
-        return <div></div>
-    } else {
-        return (
-            <Box display="flex" justifyContent="center" >
-                <Card className={classes.boxInternal}>
-                    {props.question.questionId ?
-                        <Box display="flex" justifyContent="center" onClick={() => handleRedirectA()}  >
-                            <Box paddingLeft={2} paddingRight={2} >
-                                <div className={classes.divInternal}><Editor editorState={questionContent} readOnly={true} onChange={onChange} /></div>
+    return (
+        <Box display="flex" justifyContent="center" >
+            <Card className={classes.boxInternal}>
+                {props.question.questionId ?
+                    <Box display="flex" justifyContent="center" onClick={() => handleRedirectA()}  >
+                        <Box paddingLeft={2} paddingRight={2} >
+                            <div className={classes.divInternal}><Editor editorState={questionContent} readOnly={true} onChange={onChange} /></div>
+                            <h3>{props.question.userId}</h3>
+                            <p>{props.question.creationDate}</p>
+                        </Box>
+                    </Box>
+                    :
+                    <Box>
+                        <Box display="flex" justifyContent="center" onClick={() => handleRedirectQ()} >
+                            <Box paddingLeft={2} paddingRight={2}>
+                                <h2>{props.question.title}</h2>
+                                <div><Editor editorState={questionContent} readOnly={true} onChange={onChange} /></div>
                                 <h3>{props.question.userId}</h3>
                                 <p>{props.question.creationDate}</p>
                             </Box>
                         </Box>
-                        :
-                        <Box>
-                            <Box display="flex" justifyContent="center" onClick={() => handleRedirectQ()} >
-                                <Box paddingLeft={2} paddingRight={2}>
-                                    <h2>{props.question.title}</h2>
-                                    <div><Editor editorState={questionContent} readOnly={true} onChange={onChange} /></div>
-                                    <h3>{props.question.userId}</h3>
-                                    <p>{props.question.creationDate}</p>
-                                </Box>
-                            </Box>
-                        </Box>}
-                </Card>
-            </Box>
-        )
-    }
+                    </Box>}
+            </Card>
+        </Box>
+    )
 }
 
 const mapStateToProps = (state: IState) => {
-    return {
-        storeQuestions: state.questionState.collectedQuestions,
-        storeQuestion: state.questionState.storeQuestion,
-    }
+
 }
 
 const mapDispatchToProps = {

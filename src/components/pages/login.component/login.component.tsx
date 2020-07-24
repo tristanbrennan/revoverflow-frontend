@@ -29,41 +29,40 @@ export const LoginComponent: React.FC = () => {
   const [inputEmail, setInputEmail] = useState('');
   const [inputPassword, setInputPassword] = useState('');
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
-let response: any;
-const setInformation = async()=>{
-  setInputEmail('');
-  setInputPassword('');
-  localStorage.setItem('jwt', response.data.jwt);
-  localStorage.setItem('admin', response.data.admin);
-  localStorage.setItem('email', response.data.email)
-  localStorage.setItem('firstName', response.data.firstName);
-  localStorage.setItem('lastName', response.data.lastName);
-  localStorage.setItem('points', response.data.points);
-  localStorage.setItem('profilePicture', response.data.profilePicture);
-  localStorage.setItem('rssaccountId', response.data.rssaccountId);
-  localStorage.setItem('userId', response.data.userID);
-  history.push('/feed')
-  window.location.reload(false);
-}
+  let response: any;
+  const setInformation = async () => {
+    setInputEmail('');
+    setInputPassword('');
+    localStorage.setItem('jwt', response.data.jwt);
+    localStorage.setItem('admin', response.data.admin);
+    localStorage.setItem('email', response.data.email)
+    localStorage.setItem('firstName', response.data.firstName);
+    localStorage.setItem('lastName', response.data.lastName);
+    localStorage.setItem('points', response.data.points);
+    localStorage.setItem('profilePicture', response.data.profilePicture);
+    localStorage.setItem('rssaccountId', response.data.rssaccountId);
+    localStorage.setItem('userId', response.data.userID);
+    history.push('/feed')
+  }
 
-const addLoginCredentials = async () => {
-  const payload = {
-    email: inputEmail,
-    password: inputPassword
-  };
-      try {
-            response = await loginRemote.checkLoginCredentials(payload);
-            await setInformation();
-        } catch { 
-            alert('Incorrect username and/or password')
-            }
-        
-        } 
+  const addLoginCredentials = async () => {
+    const payload = {
+      email: inputEmail,
+      password: inputPassword
+    };
+    try {
+      response = await loginRemote.checkLoginCredentials(payload);
+      await setInformation();
+    } catch {
+      alert('Incorrect username and/or password')
+    }
+
+  }
 
 
-  
+
   return (
     <div>
       <img alt="logo" id="logo" src={require("../../../logo/image.png")} />

@@ -60,7 +60,7 @@ const theme = createMuiTheme({
     },
 });
 
-interface ForumAnswerComponentProps {
+export interface ForumAnswerComponentProps {
     answer: Answer;
     selected: boolean;
     setSelected: (selected: boolean) => void;
@@ -104,15 +104,10 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
         try {
             questionInfo = await questionRemote.getQuestionByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))))
         } catch {
-            alert("You encountered an error")
+            alert("You encountered an error1")
             return;
         }
 
-        console.log(questionInfo.id);
-        console.log(props.answer.id);
-        console.log(questionInfo.title);
-        console.log(questionInfo.content);
-        console.log(+JSON.parse(JSON.stringify(localStorage.getItem('userId'))));
         const payload = {
             id: questionInfo.id,
             acceptedId: props.answer.id,
