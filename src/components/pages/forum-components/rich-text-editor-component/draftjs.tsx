@@ -104,7 +104,6 @@ export const RichTextEditorComponent: React.FC = () => {
             status: false,
             userID: +JSON.parse(JSON.stringify(localStorage.getItem('userId')))
         }
-        console.log(payload.creationDate);
         await questionRemote.postQuestion(payload);
         history.push("/feed");
         window.location.reload(false);

@@ -101,7 +101,6 @@ export const ForumAnswerComponent: React.FC<ForumAnswerComponentProps> = (props)
 
     const handleCloseSubmit = async () => {
         let questionInfo: Question;
-        console.log(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))));
         try {
             questionInfo = await questionRemote.getQuestionByQuestionId(+JSON.parse(JSON.stringify(localStorage.getItem('questionId'))))
         } catch {
