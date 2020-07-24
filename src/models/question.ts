@@ -1,3 +1,8 @@
+/**
+ * @file Defining user model
+ * @author Yurrian Pierre-Boyer
+ */
+
 export interface Question {
     id: number;
     acceptedId: number;

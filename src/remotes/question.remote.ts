@@ -2,6 +2,7 @@
 @author
 Jordon Hill
 */
+
 import { internalAxios } from './internal.axios'
 import { Question} from '../models/question';
 import { Answer } from '../models/answer';
@@ -20,7 +21,7 @@ export const postAnswer = async (answer: Answer) => {
 }
 
 export const getAllQuestions = async (size: number, page: number) => {
-    const response = await internalAxios.get<any>(`/questions?sort=id,desc&size=${size}&page=${page}`);
+    const response = await internalAxios.get<any>(`/questions?&size=${size}&page=${page}`);
     return response.data;
 }
 
@@ -30,7 +31,7 @@ export const getQuestionsByUserId = async (id: number, size: number, page: numbe
 }
 
 export const getUnconfirmedQuestions = async (size: number, page: number) => {
-    const response = await internalAxios.get<Question[]>(`questions/status/false?sort=id,desc&size=${size}&page=${page}`);
+    const response = await internalAxios.get<Question[]>(`questions/status/false?size=${size}&page=${page}`);
     return response.data;
 }
 

@@ -1,3 +1,10 @@
+/**
+ * @file 
+ * @author D. Jared Chase 
+ * @author Milton Reyes
+ * @author Jerry Pujals
+ */
+
 import React from 'react';
 import { useState } from 'react';
 import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
@@ -65,7 +72,7 @@ const styleMap = {
     }
 };
 
-interface AnswerRichTextEditorComponentProps {
+export interface AnswerRichTextEditorComponentProps {
     answerFields: boolean;
     setAnswerFields: (answerFields: boolean) => void;
 }

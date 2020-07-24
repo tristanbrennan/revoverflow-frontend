@@ -1,3 +1,10 @@
+/**
+ * @file 
+ * @author D. Jared Chase 
+ * @author Milton Reyes
+ * @author Jerry Pujals
+ */
+
 import React from 'react';
 import { useState } from 'react';
 import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
@@ -97,6 +104,7 @@ export const RichTextEditorComponent: React.FC = () => {
             status: false,
             userID: +JSON.parse(JSON.stringify(localStorage.getItem('userId')))
         }
+        console.log(payload.creationDate);
         await questionRemote.postQuestion(payload);
         history.push("/feed");
         window.location.reload(false);
