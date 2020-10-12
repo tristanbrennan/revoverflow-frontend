@@ -187,7 +187,7 @@ export const NavbarComponent: React.FC = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
-    localStorage.removeItem("jwt");
+    localStorage.removeItem("accessToken");
   };
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -217,7 +217,7 @@ export const NavbarComponent: React.FC = () => {
     </Menu>
   );
 
-  const [points, setPoints] = useState<any>();
+  const [points, setPoints] = useState<any>(0);
   const gettingPoints = localStorage.getItem("points");
 
   useEffect(() => {

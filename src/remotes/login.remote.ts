@@ -3,7 +3,7 @@
  * @author Michel Charles <mcharl05@nyit.edu>
  */
 
-import { internalAxios } from './internal.axios';
+import { authAxios, internalAxios } from './internal.axios';
 import { Login } from '../models/login';
 import { user } from '../models/user';
 
@@ -14,6 +14,6 @@ export const checkLoginCredentials = async (login: Login) => {
 }
 
 export const getUserById = async (id: number) => {
-    const response = await internalAxios.get<user>(`/user/${id}`);
+    const response = await authAxios.get<user>(`/user/${id}`);
     return response;
 }

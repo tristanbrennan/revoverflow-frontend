@@ -10,6 +10,7 @@ import "./login.component.css";
 import * as loginRemote from '../../../remotes/login.remote'
 import { useHistory } from 'react-router';
 import { useState } from 'react';
+import { authAxios } from "../../../remotes/internal.axios";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,9 +34,10 @@ export const LoginComponent: React.FC = () => {
 
   let response: any;
   const setInformation = async () => {
+    authAxios.defaults.headers["Authorization"]= response.headers.authorization
     setInputEmail('');
     setInputPassword('');
-    localStorage.setItem('jwt', response.data.jwt);
+    localStorage.setItem('accessToken', response.headers.authorization);
     localStorage.setItem('admin', response.data.admin);
     localStorage.setItem('email', response.data.email)
     localStorage.setItem('firstName', response.data.firstName);
@@ -47,7 +49,8 @@ export const LoginComponent: React.FC = () => {
     history.push('/feed')
   }
 
-  const addLoginCredentials = async () => {
+  const addLoginCredentials = async (e: any) => {
+    e.preventDefault()
     const payload = {
       email: inputEmail,
       password: inputPassword
@@ -87,10 +90,10 @@ export const LoginComponent: React.FC = () => {
               value={inputPassword}
               onChange={(e) => setInputPassword(e.target.value)}
             />
+            <div className="logIn">
+              <button type="submit" onClick={(e) => addLoginCredentials(e)}>Log In</button>
+            </div>
           </form>
-          <div className="logIn">
-            <button type="submit" onClick={() => addLoginCredentials()}>Log In</button>
-          </div>
         </div>
       </div>
     </div>
