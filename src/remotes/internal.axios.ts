@@ -5,7 +5,7 @@
 
 import Axios from "axios";
 
-const server = "http://localhost:8080";
+const server = process.env.API_URL ?? "http://localhost:8080";
 
 export const internalAxios = Axios.create({
     baseURL: server,
