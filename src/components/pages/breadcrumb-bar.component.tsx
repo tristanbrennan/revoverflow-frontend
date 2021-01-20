@@ -47,13 +47,13 @@ export const BreadcrumbBarComponent: React.FC = (props) => {
     }
 
     function handleClick2(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
-        history.push("/")
+        history.push("/feed")
         refreshPage();
     }
 
     return (
         <Toolbar className={classes.BCtoolbar}>
-            <Link color="inherit" href="/" onClick={handleClick2} className={classes.link}>
+            <Link color="inherit" href="/feed" onClick={handleClick2} className={classes.link}>
                 <HomeIcon className={classes.icon} />
             </Link>
             <ArrowForwardIosIcon className={classes.link} />

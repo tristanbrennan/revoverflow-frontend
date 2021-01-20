@@ -160,10 +160,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-export const NavbarComponent: React.FC = () => {
+export const NavbarComponent: React.FC<any> = (props) => {
   const history = useHistory();
-  const classes = useStyles();
   const theme = useTheme();
+  const classes = useStyles(props);
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [
@@ -187,7 +187,7 @@ export const NavbarComponent: React.FC = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
-    localStorage.removeItem("jwt");
+    localStorage.removeItem("accessToken");
   };
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -217,7 +217,7 @@ export const NavbarComponent: React.FC = () => {
     </Menu>
   );
 
-  const [points, setPoints] = useState<any>();
+  const [points, setPoints] = useState<any>(0);
   const gettingPoints = localStorage.getItem("points");
 
   useEffect(() => {
@@ -268,8 +268,9 @@ export const NavbarComponent: React.FC = () => {
             </Box>
           </Box>
 
-          <Box className={classes.arrangementInternal}>
+          <Box id="profile-icon-box" className={classes.arrangementInternal}>
             <IconButton
+              id="profile-icon-button"
               edge="start"
               aria-label="account of current user"
               // aria-controls={menuId}

@@ -5,7 +5,7 @@
 
 import Axios from "axios";
 
-const server = "http://localhost:8080";
+const server = process.env.REACT_APP_API_URL ?? "http://localhost:8080";
 
 export const internalAxios = Axios.create({
     baseURL: server,
@@ -14,6 +14,6 @@ export const internalAxios = Axios.create({
 export const authAxios = Axios.create({
     baseURL: server,
     headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        Authorization: `${localStorage.getItem("accessToken")}`,
     },
 });
