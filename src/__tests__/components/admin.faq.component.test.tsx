@@ -3,11 +3,11 @@ import {mount} from 'enzyme';
 import { AdminFAQComponent } from '../../components/faq-components/admin.faq.compent';
 import { Answer } from '../../models/answer';
 import { Question } from '../../models/question';
-import { Card } from '@material-ui/core';
+import { Card, IconButton } from '@material-ui/core';
 import { FeedBoxComponent } from '../../components/pages/feed-components/feed-box.component';
 
 
-fdescribe('admin.faq.component', () =>{
+describe('admin.faq.component', () =>{
     let testQuestions:Question[]
     let testAnswers:Answer[]
     let q1:Question = {
@@ -83,6 +83,27 @@ fdescribe('admin.faq.component', () =>{
     })
 
     it('should open a page to input a question when the add icon is pressed' ,()=>{
+        //declare some questions and answers
+        testQuestions.push(
+            q1,q2
+        )
+        testAnswers.push(
+            a1,a2
+        )
+        //render the base component for testing
+        const wrapper = mount(<AdminFAQComponent questions={testQuestions} answers={testAnswers} />);
+
+        //find the button
+        const iconButton = wrapper.find("#add-faq-button").find(IconButton)
+        //simulate event
+        iconButton.simulate('click')
+        //update all refs because we triggered a render
+        wrapper.update()
+        //find where the change should have happened
+        const additionBox = wrapper.find("#faq-addition-box")
+        //test a value on the node
+        expect(additionBox.prop('questions')).toBeTruthy()
+        expect(additionBox.prop('answers')).toBeTruthy()
         
 
     })
