@@ -5,22 +5,24 @@ RevOverflow is a site dedicated to providing support to technical problems encou
 ## Technologies Used
 
 ### Front End
-- React JS: version ^17.0.1
-- Redux: version ^
-- Material UI: version ^4.11.2
-- TypeScript: version ^^4.1.3
+- React JS: version ^16.13.1
+- Redux: version ^4.0.5
+- Material UI: version ^4.11.0
+- TypeScript: version ^3.7.2
 - AJAX - axios: version ^0.21.1
 - Git
 - Visual Studio Code
 
 ### Back End
 - Java: version 1.8
-- Spring Boot: version ^2.4.1
+- Spring Boot: version ^2.2.1
 - Hibernate: version 5.1.3.Final
 - Swagger: version ^2.9.2
 - H2 Database
+- Log4J: version ^1.2.17
 - Maven: version 1.8
 - Tomcat: version 9.0
+- Mockito
 - Eclipse: Spring Tool Suit 4
 
 ### Deployment
