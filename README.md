@@ -31,7 +31,17 @@ RevOverflow is a site dedicated to providing support to technical problems encou
 
 ## Feature
 
-- Login as User or Admin
+- Email Login as User or Admin.
+- Users can post questions explaining their technical problem.
+- Users can provide solutions to technical problems encountered by others.
+- User can post and view questions and answers in a section dedicated to location specific questions or Revature specific questions.
+- Filter the location based questions by the location.
+- Admin can add questions and corresponding answers to the 'Frequently Asked Questions' sections.
+- Users can view a 'Frequently Asked Questions' section for both locations and Revature.
+
+### Todo (stretch goal)
+- User, I should be able to view another users profile where I can see the questions and answers submitted by the other user.
+- Horizontal Scalability
 
 ## Getting Started
 
