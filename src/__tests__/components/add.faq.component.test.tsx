@@ -1,6 +1,6 @@
 import React from 'react'
 import {mount} from 'enzyme';
-import { AdminFAQComponent } from '../../components/faq-components/admin.faq.compent';
+import { AddFAQComponent } from '../../components/faq-components/add.faq.component';
 import { Answer } from '../../models/answer';
 import { Question } from '../../models/question';
 import { Card, IconButton } from '@material-ui/core';
@@ -8,9 +8,7 @@ import { FeedBoxComponent } from '../../components/pages/feed-components/feed-bo
 import { RichTextEditorComponent } from '../../components/pages/forum-components/rich-text-editor-component/draftjs';
 
 
-describe('admin.faq.component', () =>{
-    let testQuestions:Question[]
-    let testAnswers:Answer[]
+describe('add.faq.component', () =>{
     let q1:Question = {
         id: 1,
         acceptedId: 1,
@@ -54,62 +52,58 @@ describe('admin.faq.component', () =>{
     }
 
 
-    beforeEach(() => {
-        testAnswers = []
-        testQuestions = []
-      });
-
 
     it('should render', () => {
         
-        const wrapper = mount(<AdminFAQComponent questions={testQuestions} answers={testAnswers} />);
+        const wrapper = mount(<AddFAQComponent/>);
         expect(wrapper).toBeDefined();
     })
 
-    it('should show frequently asked questions and answers' ,()=>{
+    it('should redirect back to FAQs when submit is clicked' ,()=>{
         //declare some questions and answers
-        testQuestions.push(
-            q1,q2
-        )
-        testAnswers.push(
-            a1,a2
-        )
-        //render the base component for testing
-        const wrapper = mount(<AdminFAQComponent questions={testQuestions} answers={testAnswers} />);
 
-        //find allquestions
-        const questionElement = wrapper.find("#faq").find(FeedBoxComponent)
-        //check if they exist
-        expect(questionElement).toBeTruthy()
+        //render the base component for testing
+        const wrapper = mount(<AddFAQComponent/>);
+
+        //update the form data
+        const questionInput = wrapper.find('#questionInput').at(1) 
+        questionInput.simulate('change', { target: { value: q1.content } })
+        const answerInput = wrapper.find('#questionInput').at(1) 
+        answerInput.simulate('change', { target: { value: a1.content } })
+        //do submit event
+        wrapper.find('#submitFAQButton').simulate('click')
+
+        //check if were redirected after the submission
+        expect(wrapper).not.toBeDefined()
 
     })
 
-    it('should open a page to input a question when the add icon is pressed' ,()=>{
-        //declare some questions and answers
-        testQuestions.push(
-            q1,q2
-        )
-        testAnswers.push(
-            a1,a2
-        )
-        //render the base component for testing
-        const wrapper = mount(<AdminFAQComponent questions={testQuestions} answers={testAnswers} />);
+    it('should open when add button is clicked' ,()=>{
+        // //declare some questions and answers
+        // testQuestions.push(
+        //     q1,q2
+        // )
+        // testAnswers.push(
+        //     a1,a2
+        // )
+        // //render the base component for testing
+        // const wrapper = mount(<AddFAQComponent questions={testQuestions} answers={testAnswers} />);
 
-        //find the button
-        const iconButton = wrapper.find("#add-faq-button").find(IconButton)
-        //simulate event
-        iconButton.simulate('click')
-        //update all refs because we triggered a render
-        wrapper.update()
-        //find where the change should have happened
-        // const additionBox = wrapper.find("#faq-addition-box")
-        //test a value on the node
-        expect(wrapper.find(RichTextEditorComponent).prop('storeQuestions')).toBeDefined()
+        // //find the button
+        // const iconButton = wrapper.find("#add-faq-button").find(IconButton)
+        // //simulate event
+        // iconButton.simulate('click')
+        // //update all refs because we triggered a render
+        // wrapper.update()
+        // //find where the change should have happened
+        // // const additionBox = wrapper.find("#faq-addition-box")
+        // //test a value on the node
+        // expect(wrapper.find(RichTextEditorComponent).prop('storeQuestions')).toBeDefined()
         
 
     })
     
-    it('should not display questions without answers' ,()=>{
+    it('should not allow submission without an answer' ,()=>{
         //declare some questions and answers
         testQuestions.push(
             q1,answerlessQuestion
@@ -119,7 +113,7 @@ describe('admin.faq.component', () =>{
         )
 
         //render the base component for testing
-        const wrapper = mount(<AdminFAQComponent questions={testQuestions} answers={testAnswers} />);
+        const wrapper = mount(<AddFAQComponent questions={testQuestions} answers={testAnswers} />);
         
         //find allquestions
         const questionElement = wrapper.find("#faq").find(FeedBoxComponent)
