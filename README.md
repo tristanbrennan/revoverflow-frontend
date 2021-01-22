@@ -29,7 +29,9 @@ RevOverflow is a site dedicated to providing support to technical problems encou
 - Docker
 - Jenkin (Continous Deployment Server on EC2)
 
-## Features
+## Feature
+
+- Login as User or Admin
 
 ## Getting Started
 
@@ -51,36 +53,38 @@ RevOverflow is a site dedicated to providing support to technical problems encou
 
 
 ## Usage
+Our application utilizes a storefront API which communicates using RESTful conventions with our backend, which is hosted on AWS's (Amazon Web Services) EC2 servers. In turn - our backend utilizes Hibernate and STS (Spring Tool Suite) to communicate with a PostgreSQL RDS we also host on AWS.
+All this comes together in our frontend which is built using React. Our two distinct API's meet here and communicate through standard HTTP protocols. We encrypt all our users logins as well as ensure all endpoints are distinct and cannot be compromised.
 
 ## Contributers
-Aleksandar Nikolic
-Andy Jian
-Antardeep Kaur
-Arjun Patel
-Colin Shaw
-Domanic Yalda
-Haocheng Xu
-Hassen Rammal
-Heng Wang
-Henry Hsieh
-Jinyeong Kim
-Kelvin Trinh
-Krystyna lopez
-Mahesh Kalle
-Manik Bhushan
-Matthew Northmore
-Mohammad Hamza
-Mohammed Hammad
-Muhtasim Chowdhury
-Ramninder Saini
-Ravirajsinh dodiya
-Rous Epistola
-Samin Islam
-Sayeepan Selvagunarajah
-Stephen Razis
-Stephen Wong
-Syed Mohammad Azib
-Tristan Brennan
+- Aleksandar Nikolic
+- Andy Jian
+- Antardeep Kaur
+- Arjun Patel
+- Colin Shaw
+- Domanic Yalda
+- Haocheng Xu
+- Hassen Rammal
+- Heng Wang
+- Henry Hsieh
+- Jinyeong Kim
+- Kelvin Trinh
+- Krystyna lopez
+- Mahesh Kalle
+- Manik Bhushan
+- Matthew Northmore
+- Mohammad Hamza
+- Mohammed Hammad
+- Muhtasim Chowdhury
+- Ramninder Saini
+- Ravirajsinh dodiya
+- Rous Epistola
+- Samin Islam
+- Sayeepan Selvagunarajah
+- Stephen Razis
+- Stephen Wong
+- Syed Mohammad Azib
+- Tristan Brennan
 
 
 ## License
