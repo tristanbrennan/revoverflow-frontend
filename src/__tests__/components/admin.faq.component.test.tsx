@@ -5,6 +5,7 @@ import { Answer } from '../../models/answer';
 import { Question } from '../../models/question';
 import { Card, IconButton } from '@material-ui/core';
 import { FeedBoxComponent } from '../../components/pages/feed-components/feed-box.component';
+import { RichTextEditorComponent } from '../../components/pages/forum-components/rich-text-editor-component/draftjs';
 
 
 describe('admin.faq.component', () =>{
@@ -76,8 +77,9 @@ describe('admin.faq.component', () =>{
         //render the base component for testing
         const wrapper = mount(<AdminFAQComponent questions={testQuestions} answers={testAnswers} />);
 
-        //find allquestion
+        //find allquestions
         const questionElement = wrapper.find("#faq").find(FeedBoxComponent)
+        //check if they exist
         expect(questionElement).toBeTruthy()
 
     })
@@ -100,34 +102,33 @@ describe('admin.faq.component', () =>{
         //update all refs because we triggered a render
         wrapper.update()
         //find where the change should have happened
-        const additionBox = wrapper.find("#faq-addition-box")
+        // const additionBox = wrapper.find("#faq-addition-box")
         //test a value on the node
-        expect(additionBox.prop('questions')).toBeTruthy()
-        expect(additionBox.prop('answers')).toBeTruthy()
+        expect(wrapper.find(RichTextEditorComponent).prop('storeQuestions')).toBeDefined()
         
 
     })
     
     it('should not display questions without answers' ,()=>{
+        //declare some questions and answers
+        testQuestions.push(
+            q1,answerlessQuestion
+        )
+        testAnswers.push(
+            a1
+        )
+
+        //render the base component for testing
+        const wrapper = mount(<AdminFAQComponent questions={testQuestions} answers={testAnswers} />);
+        
+        //find allquestions
+        const questionElement = wrapper.find("#faq").find(FeedBoxComponent)
+        //check if only the question with an answer is on the screen
+        expect(questionElement.length).toBe(1)
 
 
     })
 
-    // it('should render the logout menu when the profile icon is clicked', () => {
-    //     //render the base component for testing
-    //     const wrapper = mount(<AdminFAQComponent  />);
-    //     //find a node
-    //     const iconButton = wrapper.find("#profile-icon-button").find(IconButton)
-    //     //simulate event
-    //     iconButton.simulate('click')
-    //     //update all refs because we triggered a render
-    //     wrapper.update()
-    //     //find where the change should have happened
-    //     const logoutMenu = wrapper.find("#primary-search-account-menu").find(Menu)
-    //     //test a value on the node
-    //     expect(logoutMenu.prop('open')).toBeTruthy()
-    //     expect(logoutMenu.prop('anchorEl')).toBeDefined()
-    // })
 
 
 })
