@@ -7,7 +7,7 @@ import Faq from './components/UserFAQ/UserFAQ'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Faq />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
