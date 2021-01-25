@@ -5,6 +5,7 @@ pipeline{
     stages{
         stage("Prepare Environment"){
             steps{
+                sh "node --version"
                 sh "npm install"
             }
         }
