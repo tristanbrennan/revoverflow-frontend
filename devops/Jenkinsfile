@@ -5,6 +5,7 @@ pipeline{
     stages{
         stage("Prepare Environment"){
             steps{
+                echo "checking node"
                 sh "node --version"
                 sh "npm install"
             }
