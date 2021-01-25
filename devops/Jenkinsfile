@@ -13,7 +13,8 @@
         }
         stage("Test Code"){
             steps{
-                sh "npm set CI=true && react-scripts test --env=jsdom" 
+                sh "npm test -- --watchAll=false
+" 
             }
         }
         stage("SonarCloud Report"){
