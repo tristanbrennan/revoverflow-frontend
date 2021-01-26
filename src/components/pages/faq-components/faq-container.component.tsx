@@ -16,6 +16,8 @@ import { IState } from '../../../reducers';
 import { connect } from 'react-redux';
 import { clickTab } from '../../../actions/question.actions';
 import LiveHelpIcon from '@material-ui/icons/LiveHelp';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import BusinessIcon from '@material-ui/icons/Business';
 
 const theme = createMuiTheme({
     palette: {
@@ -136,9 +138,9 @@ export const FaqContainerComponent: React.FC<FeedContainerComponentProps> = (pro
             <Container className={classes.containerInternal}>
                 <Box justifyContent="flex-end" display="flex" >
                     <ThemeProvider theme={theme} >
-                        <Button variant="contained" color="secondary" onClick={() => handleRedirect()}>
-                            Ask a Question
-                    </Button>
+                        {admin === 'false' ? <Button variant="contained" color="secondary" onClick={() => handleRedirect()}>
+                            Post FAQ
+                        </Button> : ""}
                     </ThemeProvider>
                 </Box>
                 <ThemeProvider theme={theme} >
@@ -151,15 +153,12 @@ export const FaqContainerComponent: React.FC<FeedContainerComponentProps> = (pro
                             scrollButtons="auto"
                             onChange={handleChange}
                         >
-                            <Tab icon={<DynamicFeedOutlinedIcon fontSize="large" />} label="RECENT" className={classes.boxInternal}
+                            <Tab icon={<BusinessIcon fontSize="large" />} label="Revature" className={classes.boxInternal}
                                 onClick={(e) => load("recent", 0)} />
-                            <Tab icon={<LiveHelpIcon fontSize="large" />} label="MY QUESTIONS" className={classes.boxInternal}
+                            <Tab icon={<LocationOnIcon fontSize="large" />} label="Location" className={classes.boxInternal}
                                 onClick={(e) => load("question", 0)} />
-                            <Tab icon={<QuestionAnswerIcon fontSize="large" />} label="MY ANSWERS" className={classes.boxInternal}
-                                onClick={(e) => load("answer", 0)} />
-                            {admin === 'true' ? <Tab icon={<ConfirmationNumberOutlinedIcon fontSize="large" onClick={(e) => load("confirm", 0)} />}
-                                label="CONFIRM" className={classes.boxInternal} /> : ""}
                         </Tabs>
+                       
                     </Box>
                     <div style={{ width: '100%' }}>
                         <Box display="flex" flexDirection="column" justifyContent="center" >
