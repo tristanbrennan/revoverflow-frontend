@@ -1,5 +1,6 @@
 import React from 'react'
 import {mount} from 'enzyme';
+import Jest from 'jest'
 import { AddFAQComponent } from '../../components/faq-components/add.faq.component';
 import { Answer } from '../../models/answer';
 import { Question } from '../../models/question';
@@ -52,7 +53,6 @@ describe('add.faq.component', () =>{
     }
 
 
-
     it('should render', () => {
         
         const wrapper = mount(<AddFAQComponent/>);
@@ -66,9 +66,9 @@ describe('add.faq.component', () =>{
         const wrapper = mount(<AddFAQComponent/>);
 
         //update the form data
-        const questionInput = wrapper.find('#questionInput').at(1) 
+        const questionInput = wrapper.find('#questionInput')
         questionInput.simulate('change', { target: { value: q1.content } })
-        const answerInput = wrapper.find('#questionInput').at(1) 
+        const answerInput = wrapper.find('#questionInput')
         answerInput.simulate('change', { target: { value: a1.content } })
         //do submit event
         wrapper.find('#submitFAQButton').simulate('click')
@@ -77,51 +77,37 @@ describe('add.faq.component', () =>{
         expect(wrapper).not.toBeDefined()
 
     })
-
-    it('should open when add button is clicked' ,()=>{
-        // //declare some questions and answers
-        // testQuestions.push(
-        //     q1,q2
-        // )
-        // testAnswers.push(
-        //     a1,a2
-        // )
-        // //render the base component for testing
-        // const wrapper = mount(<AddFAQComponent questions={testQuestions} answers={testAnswers} />);
-
-        // //find the button
-        // const iconButton = wrapper.find("#add-faq-button").find(IconButton)
-        // //simulate event
-        // iconButton.simulate('click')
-        // //update all refs because we triggered a render
-        // wrapper.update()
-        // //find where the change should have happened
-        // // const additionBox = wrapper.find("#faq-addition-box")
-        // //test a value on the node
-        // expect(wrapper.find(RichTextEditorComponent).prop('storeQuestions')).toBeDefined()
-        
-
-    })
     
-    it('should not allow submission without an answer' ,()=>{
-        // //declare some questions and answers
-        // testQuestions.push(
-        //     q1,answerlessQuestion
-        // )
-        // testAnswers.push(
-        //     a1
-        // )
+    it('should call submitFAQ with values of q2', ()=>{
+        const wrapper = mount(<AddFAQComponent/>);
+        const submitSpy = jest.spyOn(AddFAQComponent.prototype, 'submitFAQ');
 
-        // //render the base component for testing
-        // const wrapper = mount(<AddFAQComponent questions={testQuestions} answers={testAnswers} />);
+        const questionInput = wrapper.find('#questionInput')
+        questionInput.simulate('change', { target: { value: q2.content } })
+        const answerInput = wrapper.find('#questionInput')
+        answerInput.simulate('change', { target: { value: a2.content } })
+        //do submit event
+        wrapper.find('#submitFAQButton').simulate('click')
         
-        // //find allquestions
-        // const questionElement = wrapper.find("#faq").find(FeedBoxComponent)
-        // //check if only the question with an answer is on the screen
-        // expect(questionElement.length).toBe(1)
-
+        //see if the function was called
+        expect(submitSpy).toBeCalledWith(q2.content, a2.content)
 
     })
+
+
+    it('should not allow submission without an answer' ,()=>{
+        const wrapper = mount(<AddFAQComponent/>);
+        
+        const questionInput = wrapper.find('#questionInput')
+        questionInput.simulate('change', { target: { value: answerlessQuestion.content } })
+        //do submit event
+        wrapper.find('#submitFAQButton').simulate('click')
+        
+        //we stayed on this page because the submit did not go through
+        expect(wrapper).toBeDefined()
+
+    })
+
 
 
 
